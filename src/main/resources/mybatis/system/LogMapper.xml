@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjljy.blog.mapper.system.LogMapper">
+  <resultMap id="BaseResultMap" type="com.hjljy.blog.entity.system.Log">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="response_time" jdbcType="INTEGER" property="responseTime" />
+    <result column="operation_method" jdbcType="VARCHAR" property="operationMethod" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+    <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+    <result column="errorMsg" jdbcType="VARCHAR" property="errormsg" />
+  </resultMap>
+</mapper>
