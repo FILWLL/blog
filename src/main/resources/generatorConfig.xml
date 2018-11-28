@@ -23,7 +23,7 @@
             <property name="suppressDate" value="true" />
         </commentGenerator>
         <!-- JDBC连接信息-->
-        <jdbcConnection userId="root" password="root" driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/hjljy?serverTimezone=GMT" />
+        <jdbcConnection userId="root" password="root" driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/blog?serverTimezone=GMT" />
 
         <!-- 类型转换-->
         <javaTypeResolver>
@@ -33,7 +33,7 @@
         </javaTypeResolver>
 
         <!--生成entity的相关配置-->
-        <javaModelGenerator targetPackage="com.hjljy.blog.pojo.system" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.hjljy.blog.entity.system" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
             <property name="useActualColumnNames" value="true"/>
@@ -56,7 +56,7 @@
                <ignoreColumn column="FRED" />-->
         <!-- 指定列的java数据类型
         <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />  -->
-        <table tableName="t_sys_account" domainObjectName="Account" enableCountByExample="false" enableDeleteByExample="false"
+        <table tableName="t_sys_log" domainObjectName="Log" enableCountByExample="false" enableDeleteByExample="false"
             enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>
