@@ -8,7 +8,6 @@ public class Log {
     /**
      * 主键
      */
-    @Id
     private Integer id;
 
     /**
@@ -30,6 +29,12 @@ public class Log {
     private Integer responseTime;
 
     /**
+     * 操作ID
+     */
+    @Column(name = "operation_id")
+    private Integer operationId;
+
+    /**
      * 操作方法
      */
     @Column(name = "operation_method")
@@ -38,8 +43,8 @@ public class Log {
     /**
      * 具体操作
      */
-    @Column(name = "operation_type")
-    private String operationType;
+    @Column(name = "operation_desc")
+    private String operationDesc;
 
     /**
      * 操作时间
@@ -126,6 +131,24 @@ public class Log {
     }
 
     /**
+     * 获取操作ID
+     *
+     * @return operation_id - 操作ID
+     */
+    public Integer getOperationId() {
+        return operationId;
+    }
+
+    /**
+     * 设置操作ID
+     *
+     * @param operationId 操作ID
+     */
+    public void setOperationId(Integer operationId) {
+        this.operationId = operationId;
+    }
+
+    /**
      * 获取操作方法
      *
      * @return operation_method - 操作方法
@@ -146,19 +169,19 @@ public class Log {
     /**
      * 获取具体操作
      *
-     * @return operation_type - 具体操作
+     * @return operation_desc - 具体操作
      */
-    public String getOperationType() {
-        return operationType;
+    public String getOperationDesc() {
+        return operationDesc;
     }
 
     /**
      * 设置具体操作
      *
-     * @param operationType 具体操作
+     * @param operationDesc 具体操作
      */
-    public void setOperationType(String operationType) {
-        this.operationType = operationType == null ? null : operationType.trim();
+    public void setOperationDesc(String operationDesc) {
+        this.operationDesc = operationDesc == null ? null : operationDesc.trim();
     }
 
     /**
