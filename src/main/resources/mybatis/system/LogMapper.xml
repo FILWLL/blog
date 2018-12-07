@@ -11,6 +11,7 @@
     <result column="response_time" property="responseTime" jdbcType="INTEGER" />
     <result column="operation_id" property="operationId" jdbcType="INTEGER" />
     <result column="operation_method" property="operationMethod" jdbcType="VARCHAR" />
+    <result column="operation_ip" property="operationIp" jdbcType="VARCHAR" />
     <result column="operation_desc" property="operationDesc" jdbcType="VARCHAR" />
     <result column="operation_time" property="operationTime" jdbcType="TIMESTAMP" />
     <result column="errorMsg" property="errormsg" jdbcType="VARCHAR" />

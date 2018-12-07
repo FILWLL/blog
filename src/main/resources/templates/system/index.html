@@ -1,0 +1,133 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="/plugin/layui-v2.4.5/layui/css/layui.css">
+    <link rel="stylesheet" href="/plugin/layui-v2.4.5/layui/css/layui.mobile.css">
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头部区域-->
+    <div class="layui-header">
+        <div class="layui-logo">layui 后台布局</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/images/b07.jpg" class="layui-nav-img">
+                    贤心
+                    <span class="layui-nav-more"></span>
+                </a>
+
+                <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul id="menu1" class="layui-nav layui-nav-tree" lay-filter="test">
+                <li th:each="menu : ${resources}" class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:text="${menu.name}" href="javascript:;">所有商品</a>
+                    <dl class="layui-nav-child">
+                <dd th:each="cmenu : ${menu.children}"><a class="J_menuItem" href="graph_echarts.html"
+                                                          th:text="${cmenu.name}"
+                                                          th:href="${cmenu.attributes.resourceUrl}">系统管理</a>
+                </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">云市场</a></li>
+                <li class="layui-nav-item"><a href="">发布商品</a></li>
+
+            </ul>
+            <ul id="menu" class="layui-nav layui-nav-tree"></ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+<script src="/plugin/layui-v2.4.5/layui/layui.js"></script>
+
+
+<script src="/js/jquery-2.1.1.min.js"></script>
+<script>
+
+    $(function () {
+        getResources();
+        layui.use('element', function () {
+            var element = layui.element;
+
+        });
+    })
+
+    function getResources() {
+        $.ajax({
+            type: 'get',
+            url: '/getResources',
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var results = data.data;
+                var html = "";
+                if (results != null && results.length > 0) {
+                    for (var i = 0; i < results.length; i++) {
+                        var res = results[i];
+                        var chi = res.children;
+                        html += "<li class='layui-nav-item'><a href='javascript:;'>" + res.name + "<span class='layui-nav-more'></span></a> ";
+                        if (chi != null && chi.length > 0) {
+                            html += "<dl class='layui-nav-child'>";
+                            for (var i = 0; i < chi.length; i++) {
+                                var c = chi[i];
+                                html += "<dd><a href=" + c.attributes.resourceUrl + ">" + c.name + "</a></dd>";
+                            }
+                            html += "</dl></li>";
+                        }
+                    }
+                }
+                $("#menu").html(html);
+            }
+        });
+        //JavaScript代码区域
+
+    }
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ public class Log {
     /**
      * 主键
      */
+    @Id
     private Integer id;
 
     /**
@@ -53,6 +54,12 @@ public class Log {
     private Date operationTime;
 
     /**
+     * 操作ip
+     */
+    @Column(name = "operation_ip")
+    private String operationIp;
+
+    /**
      * 错误信息
      */
     @Column(name = "errorMsg")
@@ -92,6 +99,22 @@ public class Log {
      */
     public void setUserName(String userName) {
         this.userName = userName == null ? null : userName.trim();
+    }
+
+    /**
+     * 获取操作的ip地址
+     * @return operationIp 操作的IP地址
+     */
+    public String getOperationIp() {
+        return operationIp;
+    }
+
+    /**
+     * 设置操作的ip地址
+     * @param operationIp 操作的IP地址
+     */
+    public void setOperationIp(String operationIp) {
+        this.operationIp = operationIp;
     }
 
     /**
