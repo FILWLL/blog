@@ -1,15 +1,17 @@
 package com.hjljy.blog.service.system.resources;
 
-import com.hjljy.blog.common.Tree;
+import com.hjljy.blog.common.MenuTree;
 import com.hjljy.blog.entity.system.Resources;
 import com.hjljy.blog.mapper.system.ResourcesMapper;
 import com.hjljy.blog.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,39 +29,37 @@ public class ResourcesServiceImpl extends BaseServiceImpl<Resources> implements 
         this.resourcesMapper = resourcesMapper;
     }
 
+    /**
+     * 根据角色ID获取到对应的菜单资源树
+     *
+     * @param roleId
+     * @return List<Tree<Resources>>
+     */
     @Override
-    public List<Tree<Resources>> getResourcesByRoleId(Integer roleId) {
-        List<Tree<Resources>> list = new ArrayList<>();
+    public List<Object> getResourcesByRoleId(Integer roleId) {
+        List<Object> menuList = new ArrayList<>();
         try {
+            //第一步，获取到当前角色所有的菜单权限资源（不包含界面按钮）
             List<Resources> resources = resourcesMapper.getResourcesByRoleId(roleId);
-            resources.stream().filter(res -> res.getPid() == 0).forEach(res1 -> {
-                List<Tree<Resources>> tree = createTree(resources, res1.getId());
-                if(!CollectionUtils.isEmpty(tree)){
-                    list.add(new Tree<Resources>(tree,res1.getId(),res1.getIcon(),res1.getName(),res1.getResourceUrl()));
-                }
-            });
+            //第ER步，获取到每个顶级菜单的所有子菜单
+            MenuTree menuTree = new MenuTree();
+            menuList = menuTree.menuList(resources);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.toString();
         }
-        return list;
-
-//        //遍历获取到的菜单资源，封装到树形结构当中
-//        for (Resources resource : resources) {
-//            Tree<Resources> tree = new Tree<>();
-//            tree.setId(resource.getId());
-//            tree.setParentId(resource.getPid());
-//            tree.setText(resource.getName());
-//            Map<String, Object> attributes = new HashMap<>(16);
-//            attributes.put("url", resource.getResourceUrl());
-//            attributes.put("icon", resource.getIcon());
-//            tree.setAttributes(attributes);
-//            list.add(tree);
-//        }
-//        return list;
+        return menuList;
     }
 
-    private List<Tree<Resources>> createTree(List<Resources> resources, Integer pid) {
-        return resources.stream().filter(res -> res.getId() != 0 && res.getPid() == pid)
-                .map(res -> new Tree<Resources>(res.getId(),res.getName(),res.getIcon(),res.getSort(),res.getResourceUrl())).collect(Collectors.toList());
+    @Override
+    public Set<String> getPermsByUserId(Integer id) {
+        Set<String> perms = resourcesMapper.getPermsByUserId(id);
+        Set<String> permsSet = new HashSet<>();
+        //去除空值不然会报错
+        for (String perm : perms) {
+            if(!StringUtils.isEmpty(perm)){
+                permsSet.add(perm);
+            }
+        }
+        return permsSet;
     }
 }

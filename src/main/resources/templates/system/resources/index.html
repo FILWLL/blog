@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/system/common :: header">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        body {
+            padding: 10px 30px;
+        }
+        .downpanel .layui-select-title span{
+            line-height: 38px;
+        }
+        .downpanel dl dd:hover{background-color: inherit;}
+    </style>
+
+
+</head>
+<body>
+
+<form class="layui-form layui-hide" id="testlayer" method="POST" onsubmit="return false;">
+
+    <div class="layui-form-item layui-hide">
+        <div class="layui-input-inline">
+            <input type="text" name="id" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入资源名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级资源</label>
+        <div class="layui-input-inline">
+            <div class="layui-unselect layui-form-select downpanel">
+                <div class="layui-select-title">
+                    <span class="layui-input " style="line-height:38px" id="treeclass">选择资源</span>
+                    <input type="hidden" name="pid" value="0">
+                    <i class="layui-edge"></i>
+                </div>
+                <dl class="layui-anim layui-anim-upbit">
+                    <dd>
+                        <ul id="classtree"></ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="0" title="目录" checked>
+            <input type="radio" name="type" value="1" title="菜单">
+            <input type="radio" name="type" value="2" title="按钮">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源路径</label>
+        <div class="layui-input-inline">
+            <input type="email" name="resourceUrl" placeholder="请输入url：" autocomplete="off"
+                   class="layui-input">
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源权限</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="perms" placeholder="请输入权限信息：" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单排序</label>
+        <div class="layui-input-inline">
+            <input type="text" name="sort" lay-verify="number" placeholder="请输入排序："autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否禁用</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="locked" lay-skin="switch" value="1" lay-text="否|是" checked >
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">描述信息</label>
+        <div class="layui-input-inline">
+            <textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<blockquote class="layui-elem-quote">所有监听数据请打开控制台查看</blockquote>
+<button class="layui-btn layui-btn-primary up-all">全部收起</button>
+<button class="layui-btn layui-btn-primary down-all">全部展开</button>
+<button class="layui-btn layui-btn-primary add-menu">添加目录</button>
+
+<table class="layui-table layui-form" id="test-tree-table"></table>
+
+
+<div th:include="/system/common :: footer"></div>
+<script th:src="@{/js/system/resources/resources.js}"></script>
+</body>
+</html>

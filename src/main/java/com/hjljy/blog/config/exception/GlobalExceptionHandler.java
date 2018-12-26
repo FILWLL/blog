@@ -16,14 +16,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-
     @ExceptionHandler
     @ResponseBody
     public AjaxJson doExceptionHandler(Exception e,HttpServletResponse rep){
-
+        e.printStackTrace();
         AjaxJson ajaxJson = new AjaxJson();
-        ajaxJson.setSuccess(false);
+        ajaxJson.setFailMsg(e.toString());
         return  ajaxJson;
     }
 }

@@ -1,10 +1,13 @@
 package com.hjljy.blog.entity.system;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "t_sys_log")
-public class Log {
+public class Log implements Serializable {
+
+    private static final long serialVersionUID = 7026470724648329551L;
     /**
      * 主键
      */
@@ -29,11 +32,7 @@ public class Log {
     @Column(name = "response_time")
     private Integer responseTime;
 
-    /**
-     * 操作ID
-     */
-    @Column(name = "operation_id")
-    private Integer operationId;
+
 
     /**
      * 操作方法
@@ -153,23 +152,7 @@ public class Log {
         this.responseTime = responseTime;
     }
 
-    /**
-     * 获取操作ID
-     *
-     * @return operation_id - 操作ID
-     */
-    public Integer getOperationId() {
-        return operationId;
-    }
 
-    /**
-     * 设置操作ID
-     *
-     * @param operationId 操作ID
-     */
-    public void setOperationId(Integer operationId) {
-        this.operationId = operationId;
-    }
 
     /**
      * 获取操作方法

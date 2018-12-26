@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>用户管理</title>
+<head th:include="/system/common :: header"></head>
+<body style="overflow:-Scroll;overflow-y:hidden !important;">
+<table class="layui-hide" lay-filter="test" id="demo"></table>
+<table class="layui-table layui-form layui-hide" id="test-tree-table"></table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn   layui-btn-radius" lay-event="getCheckData">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <button class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="getCheckLength">
+            <i class="layui-icon">&#xe640;</i>批量删除
+        </button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <button class="layui-btn layui-btn-xs" lay-event="setRes">设置权限</button>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<div th:include="/system/common :: footer"></div>
+<script>
+    layui.config({
+        base: '/plugin/layui-v2.4.5/model/',
+    })
+    layui.use(['treetable', 'form', 'layer', 'tree', 'table'], function () {
+        var treetable = layui.treetable,
+            form = layui.form,
+            table = layui.table,
+            layer = layui.layer;
+        var $ = layui.jquery, tree = layui.tree;
+
+        var roleMenu = null;
+        var menu = null;
+
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: '/system/role/getRoleByPage/' //数据接口ole
+            , toolbar: '#toolbarDemo' //添加头部工具栏
+            , title: '角色数据表'
+            , cols: [
+                [ //表头
+                    {type: 'checkbox'}
+                    , {field: 'id', title: 'ID', sort: true, width: 40}
+                    , {field: 'name', title: '角色名', width: 120}
+                    , {field: 'englishName', title: '角色英文名', width: 120}
+                    , {field: 'createTime', title: '创建时间', width: 200}
+                    , {field: 'description', title: '描述'}
+                    , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
+                ]
+            ]
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                , groups: 4 //只显示 4 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            }
+        })
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+
+
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+            if (obj.event === 'edit') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.email
+                }, function (value, index) {
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+            //设置权限点击事件
+            if (obj.event === 'setRes') {
+                //获取到对应角色的所有权限
+                getRoleMenuByRoleId(data.id);
+                /**
+                 * 初始化树形表格
+                 */
+                treetableInit();
+                $("#test-tree-table").removeClass("layui-hide");
+
+                //打开编辑框
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-molv',
+                    title: '权限信息',
+                    shadeClose: true,
+                    shade: 0.3,
+                    offset: 't',
+                    area: ['auto', 'auto'],
+                    btn: ['确认', '取消'],
+                    content: $("#test-tree-table"),
+                    yes: function (index, layero) {
+                        var ids =treetable.all('checked').ids;
+                        console.log(ids);
+                        layer.closeAll();
+                        addRoleMenu(ids,data.id);
+                        $("#test-tree-table").addClass("layui-hide");
+                    },
+                    btn2:function (index, layero) {
+                        $("#test-tree-table").addClass("layui-hide");
+                    },
+                    cancel: function (index, layero) {
+                        $("#test-tree-table").addClass("layui-hide");
+                    }
+                });
+            }
+        });
+
+
+        //监听表格添加
+        treetable.on('treetable(add)', function (data) {
+            layer.msg('添加操作');
+            console.dir(data);
+        })
+        //监听表格编辑
+        treetable.on('treetable(edit)', function (data) {
+            layer.msg('编辑操作');
+            console.dir(data);
+        })
+
+        //添加菜单事件
+
+        //监听编辑框的提交事件
+        form.on('submit(formDemo)', function (data) {
+            console.log(data.field);
+            $.ajax({
+                url: "/system/resources/addOrEdit"
+                , data: data.field
+                , async: false
+                , type: "post"
+                , dataType: "json"
+                , success: function (data) {
+                    document.getElementById("testlayer").reset();
+                    $("#testlayer").addClass("layui-hide");
+                    treetableInit();
+                    layer.closeAll('page');
+                    if (data.success) {
+                        layer.msg(data.msg);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        });
+
+        form.on('switch(status)', function (data) {
+            layer.msg('监听状态操作');
+            console.dir(data);
+        });
+
+        function addRoleMenu(ids,roleId) {
+            console.log(ids);
+            $.ajax({
+                url: "/system/role/addRoleMenu",
+                method: 'POST',
+                dataType:"json",
+                async: false,
+                data:{  "ids":ids.toString(),
+                        "roleId":roleId
+                },
+                success: function (results) {
+                    layer.msg(results.msg);
+                }
+            });
+        }
+
+        function getRoleMenuByRoleId(id) {
+            //获取菜单资源
+            $.ajax({
+                url: "/system/role/getRoleMenuByRoleId",
+                method: 'GET',
+                async: false,
+                dataType:"json",
+                data: {"roleId": id},
+                success: function (results) {
+                    roleMenu = results.data;
+                }
+            });
+        }
+
+        function treetableInit() {
+            //获取菜单资源
+            $.ajax({
+                url: "/system/resources/getAllResources",
+                method: 'POST',
+                async: false,
+                success: function (results) {
+                    menu = results.data;
+                }
+            });
+            treetable.render({
+                elem: '#test-tree-table',
+                data: menu,
+                field: 'name',
+                is_checkbox: true,
+                cols: [
+                    {
+                        field: 'name',
+                        title: '标题',
+                        width: '120px',
+                    },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        width: '20px'
+                    }
+                ]
+            });
+            //将已有的权限进行添加
+            if (roleMenu.length!=0){
+                $('.layui-table tr[data-id=' + 0 + '] td .layui-form-checkbox').trigger("click");
+                for (var j = 0; j < menu.length; j++) {
+                    var x=0;
+                    for (var i = 0; i < roleMenu.length; i++) {
+                        if (menu[j].id ==roleMenu[i].resourceId){
+                            x = 1;
+                        }
+                    }
+                    if (x == 0){
+                        $('.layui-table tr[data-id=' + menu[j].id + '] td .layui-form-checkbox').trigger("click");
+                    }
+                }
+            }
+
+        }
+    })
+
+
+</script>
+</body>
+</html>

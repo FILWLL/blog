@@ -64,12 +64,23 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public PageInfo<T> listForDataGrid(Page<T> grid) {
+        System.out.println(grid.toString());
         return this.listForDataGrid(grid, null);
     }
 
     @Override
     public PageInfo<T> listForDataGrid(Page<T> grid, T entity) {
-        PageHelper.startPage(grid.getPageNum(), grid.getPageSize());
+        PageHelper.startPage(grid.getPageSize(), grid.getPageNum());
         return new PageInfo<>(mapper.select(entity));
+    }
+
+    @Override
+    public int getCount(T entity){
+        return mapper.selectCount(entity);
+    }
+
+    public boolean deleteByIds(String ids) {
+
+        return mapper.deleteByIds(ids)> 0;
     }
 }

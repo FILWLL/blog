@@ -1,10 +1,12 @@
 package com.hjljy.blog.entity.system;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "t_sys_resources")
-public class Resources {
+public class Resources implements Serializable{
+    private final static long serialVersionUID = 1L;
     /**
      * 资源ID
      */
@@ -283,5 +285,10 @@ public class Resources {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Resources{" + "id=" + id + ", pid=" + pid + ", name='" + name + '\'' + ", resourceUrl='" + resourceUrl + '\'' + ", type=" + type + ", perms='" + perms + '\'' + ", icon='" + icon + '\'' + ", sort=" + sort + ", locked=" + locked + ", description='" + description + '\'' + ", createTime=" + createTime + ", updateTime=" + updateTime + '}';
     }
 }

@@ -1,10 +1,15 @@
 package com.hjljy.blog.entity.system;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "t_sys_role")
-public class Role {
+public class Role implements Serializable {
+    private final static long serialVersionUID = 1L;
     /**
      * 角色ID
      */
@@ -37,7 +42,7 @@ public class Role {
     /**
      * 描述信息
      */
-    private String desc;
+    private String description;
 
     /**
      * 获取角色ID
@@ -107,6 +112,7 @@ public class Role {
      *
      * @param createTime 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
@@ -125,6 +131,7 @@ public class Role {
      *
      * @param updateTime 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
@@ -134,8 +141,8 @@ public class Role {
      *
      * @return desc - 描述信息
      */
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -143,7 +150,7 @@ public class Role {
      *
      * @param desc 描述信息
      */
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setDescription(String desc) {
+        this.description = desc == null ? null : desc.trim();
     }
 }

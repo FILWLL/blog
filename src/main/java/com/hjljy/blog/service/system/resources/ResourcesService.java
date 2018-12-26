@@ -1,10 +1,10 @@
 package com.hjljy.blog.service.system.resources;
 
-import com.hjljy.blog.common.Tree;
 import com.hjljy.blog.entity.system.Resources;
 import com.hjljy.blog.service.base.BaseService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Auther: HJLJY
@@ -17,5 +17,12 @@ public interface ResourcesService extends BaseService<Resources> {
      * @param roleId
      * @return
      */
-    List<Tree<Resources>> getResourcesByRoleId(Integer roleId);
+    List<Object> getResourcesByRoleId(Integer roleId);
+
+    /**
+     * 根据用户ID获取到权限信息
+     * @param id
+     * @return
+     */
+    Set<String> getPermsByUserId(Integer id);
 }

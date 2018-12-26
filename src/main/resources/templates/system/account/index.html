@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="UTF-8">
+<title>用户管理</title>
+<head th:include="/system/common :: header"></head>
+
 <body>
-jinlghgjg
+
+<!--编辑框-->
+<form class="layui-form layui-hide" id="testlayer" method="POST" onsubmit="return false;">
+    <div class="layui-form-item layui-hide">
+        <div class="layui-input-inline">
+            <input type="text" name="id" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" id="pwd">
+        <label class="layui-form-label">密码框</label>
+        <div class="layui-input-inline">
+            <input type="password" name="password" id="pw" lay-verify="required" placeholder="请输入密码"
+                   autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电子邮件</label>
+        <div class="layui-input-inline">
+            <input type="email" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off"
+                   class="layui-input">
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="phone" lay-verify="phone" placeholder="请输入联系电话" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-inline">
+            <input type="text" name="address" placeholder="请输入地址" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否禁用</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="status"lay-skin="switch" value="1" lay-text="否|是" checked>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单选框</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="1" title="男" checked>
+            <input type="radio" name="sex" value="0" title="女">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">系统角色</label>
+        <div class="layui-input-inline">
+            <select id="role" name="roleId" lay-filter="aihao" lay-verify="required">
+                <option value=""></option>
+<!--                <option value="1">写作</option>
+                <option value="1">阅读</option>
+                <option value="1">游戏</option>
+                <option value="1">音乐</option>
+                <option value="1">旅行</option>-->
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">文本域</label>
+        <div class="layui-input-inline">
+            <textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<!--展示信息-->
+<form class="layui-form layui-form-pane" method="POST" onsubmit="return false;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        </div>
+        <label class="layui-form-label">角色名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" placeholder="请输入介绍名" autocomplete="off" class="layui-input">
+        </div>
+        <label class="layui-form-label">部门</label>
+        <div class="layui-input-inline">
+            <input type="text" name="orgName" placeholder="请输入部门" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <button class="layui-btn layui-btn-warm" onclick="searchData()"><i
+                    class="layui-icon layui-icon-search"></i></button>
+        </div>
+    </div>
+</form>
+
+<table class="layui-hide" lay-filter="test" id="demo"></table>
+<!--工具组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn   layui-btn-radius" lay-event="add">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <button class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="delBatch">
+            <i class="layui-icon">&#xe640;</i>批量删除
+        </button>
+    </div>
+</script>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="sex" value="{{d.sex}}" lay-skin="switch" lay-text="男|女" lay-filter="sexDemo" {{ d.sex==
+           1 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="checkboxTpl">
+    <input type="checkbox" name="lock" value="{{d.status}}" title="禁用" lay-filter="lockDemo" {{ d.status== false
+           ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="barDemo">
+    <button class="layui-btn layui-btn-xs" lay-event="repwd">重置密码</button>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<div th:include="/system/common :: footer"></div>
+<script th:src="@{/js/system/account/account.js}">
+</script>
 </body>
 </html>

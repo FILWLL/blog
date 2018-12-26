@@ -826,7 +826,6 @@ a cite {
     z-index: 998;
     width: auto;
     overflow: hidden;
-    overflow-y: auto;
     box-sizing: border-box
 }
 
@@ -2729,7 +2728,7 @@ a cite {
 }
 
 .layui-laypage select {
-    height: 22px;
+    height: 46px;
     padding: 3px;
     border-radius: 2px;
     cursor: pointer
@@ -3184,14 +3183,14 @@ a cite {
 .layui-table-page {
     position: relative;
     width: 100%;
-    padding: 7px 7px 0;
+    padding: 3px 3px 0;
     height: 41px;
     font-size: 12px;
     white-space: nowrap
 }
 
 .layui-table-page > div {
-    height: 26px
+    height: 35px
 }
 
 .layui-table-page .layui-laypage {
@@ -3199,8 +3198,8 @@ a cite {
 }
 
 .layui-table-page .layui-laypage a, .layui-table-page .layui-laypage span {
-    height: 26px;
-    line-height: 26px;
+    height: 35px;
+    line-height: 35px;
     margin-bottom: 10px;
     border: none;
     background: 0 0
@@ -3226,8 +3225,8 @@ a cite {
 }
 
 .layui-table-page .layui-laypage button, .layui-table-page .layui-laypage input {
-    height: 26px;
-    line-height: 26px
+    height: 35px;
+    line-height: 35px
 }
 
 .layui-table-page .layui-laypage input {
@@ -3239,7 +3238,7 @@ a cite {
 }
 
 .layui-table-page select {
-    height: 18px
+    height: 35px
 }
 
 .layui-table-patch .layui-table-cell {

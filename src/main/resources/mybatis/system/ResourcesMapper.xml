@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hjljy.blog.mapper.system.ResourcesMapper" >
-  <resultMap id="BaseResultMap" type="com.hjljy.blog.entity.system.Resources" >
-    <result column="id" property="id" jdbcType="INTEGER" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="perms" property="perms" jdbcType="VARCHAR" />
-    <result column="icon" property="icon" jdbcType="VARCHAR" />
-    <result column="sort" property="sort" jdbcType="INTEGER" />
-    <result column="locked" property="locked" jdbcType="BIT" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <select id="getResourcesByRoleId" resultType="com.hjljy.blog.entity.system.Resources" parameterType="integer">
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjljy.blog.mapper.system.ResourcesMapper">
+    <resultMap id="BaseResultMap" type="com.hjljy.blog.entity.system.Resources">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="perms" property="perms" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <select id="getResourcesByRoleId" resultType="com.hjljy.blog.entity.system.Resources" parameterType="integer">
     SELECT
 	id,
 	pid,
@@ -32,4 +32,10 @@
     AND sr.type IN (0, 1)
     ORDER BY  sr.sort
   </select>
+    <select id="getPermsByUserId" resultType="string" parameterType="integer">
+        select distinct perms FROM t_sys_account tsa
+        JOIN t_sys_role_resources tsrr on tsa.role_id =tsrr.role_id
+        JOIN t_sys_resources tsr on tsr.id=tsrr.resource_id
+        WHERE tsa.id = #{id}
+    </select>
 </mapper>

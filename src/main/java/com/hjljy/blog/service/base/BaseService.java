@@ -38,6 +38,14 @@ public interface BaseService<T> {
     boolean deleteById(Object key);
 
     /**
+     * 根据主键字符串批量删除实体
+     *
+     * @param ids 主键
+     * @return 操作结果
+     */
+    boolean deleteByIds(String ids);
+
+    /**
      * 根据主键字段进行查询
      *
      * @param key 主键
@@ -84,4 +92,11 @@ public interface BaseService<T> {
      * @return 查询结果
      */
     PageInfo<T> listForDataGrid(Page<T> grid, T entity);
+
+    /**
+     * 统计总量
+     * @param entity  统计对象
+     * @return 数量
+     */
+    int getCount(T entity);
 }

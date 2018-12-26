@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="js/echarts.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: auto;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+   // var data=[[1522306819000, 2], [1522306919000, 1], [1522307619000, 3], [1522307119000, 1], [1522307120000, 1],[1522307230000, 1], [1522312240000, 4], [1522307430000, 1], [1522407230000, 5]];
+
+    data=[
+        {
+            value: [
+                "1997-10-1 10:10:10",
+                684
+            ]
+        },
+        {
+
+            value: [
+                "1997-10-2 09:12:11",
+                200
+            ]
+        },
+        /*{
+
+            value: [
+                "1997-10-15 10",
+                300
+            ]
+        }*/
+        ]
+
+
+    option = {
+        title: {
+            text: '动态数据 + 时间坐标轴'
+        },
+        tooltip: {
+            trigger: 'axis',
+        },
+        xAxis: {
+            interval:10000,
+            minInterval: 1,
+            type: 'time',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%'],
+            splitLine: {
+                show: false
+            }
+        },
+        series: [{
+            name: '模拟数据',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            data: data
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

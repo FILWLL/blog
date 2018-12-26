@@ -1,10 +1,16 @@
 package com.hjljy.blog.entity.system;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "t_sys_account")
-public class Account {
+public class Account implements Serializable {
+    private static final long serialVersionUID = 8674280943865600110L;
     @Id
     private Integer id;
 
@@ -83,6 +89,13 @@ public class Account {
      */
     private String updater;
 
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Account() {
+    }
 
     /**
      * @return id
@@ -279,7 +292,6 @@ public class Account {
     }
 
 
-
     /**
      * 获取创建时间
      *
@@ -294,6 +306,7 @@ public class Account {
      *
      * @param createTime 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
@@ -321,6 +334,7 @@ public class Account {
      *
      * @return modified_time - 修改时间
      */
+
     public Date getModifiedTime() {
         return modifiedTime;
     }
@@ -330,6 +344,7 @@ public class Account {
      *
      * @param modifiedTime 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public void setModifiedTime(Date modifiedTime) {
         this.modifiedTime = modifiedTime;
     }

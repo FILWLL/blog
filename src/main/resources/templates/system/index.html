@@ -1,11 +1,9 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:include="/system/common :: header">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>layout 后台大布局 - Layui</title>
-    <link rel="stylesheet" href="/plugin/layui-v2.4.5/layui/css/layui.css">
-    <link rel="stylesheet" href="/plugin/layui-v2.4.5/layui/css/layui.mobile.css">
 
 </head>
 <body class="layui-layout-body">
@@ -39,20 +37,32 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="loginOut()">退了</a></li>
         </ul>
     </div>
 
+    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul id="menu" class="layui-nav layui-nav-tree"></ul>
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="test" id="memus"></ul>
         </div>
     </div>
-
+    <!-- 右侧tab选项卡和内容 -->
     <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
+        <!-- 动态选项卡 -->
+        <div id="tabzu" class="layui-tab layui-tab-brief layui-tab-brief" lay-filter="tabDemo" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this " id="sy">
+                    <i class="layui-icon layui-icon-home">首页</i>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="/index.html" frameborder="0" class="layadmin-iframe" height="800px" width="100%" ></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="layui-footer">
@@ -60,48 +70,97 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-
-<script src="/plugin/layui-v2.4.5/layui/layui.all.js"></script>
-<script src="/js/jquery-2.1.1.min.js"></script>
+<div th:include="/system/common :: footer"></div>
 <script>
-    $(function () {
-        getResources();
-    })
-
-    function getResources() {
-        $.ajax({
-            type: 'get',
-            url: '/getResources',
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                var results = data.data;
-                var html = "";
-                if (results != null && results.length > 0) {
-                    for (var i = 0; i < results.length; i++) {
-                        var res = results[i];
-                        var chi = res.children;
-                        html += "<li class='layui-nav-item'>" +
-                            "<a href='javascript:;'>" + res.name +
-                            "<span class='layui-nav-more'></span></a> ";
-                        if (chi != null && chi.length > 0) {
-                            html += "<dl class='layui-nav-child'>";
-                            for (var i = 0; i < chi.length; i++) {
-                                var c = chi[i];
-                                html += "<dd><a href=" + c.attributes.resourceUrl + ">" + c.name + "</a></dd>";
-                            }
-                            html += "</dl></li>";
-                        }
-                    }
+layui.use(['element','layer'], function() {
+    /*让tab的首页不出现删除选项*/
+    layui.$("#sy").children(".layui-tab-close").css("display","none");
+    /*设置无极限左侧菜单 */
+    function getChildren(arr) {
+        var html1 = "";
+        for(var j=0;j<arr.length; j++) {
+            if (arr[j].url ==null||arr[j].url ==""){
+                if (arr[j].children.length>0){
+                    html1 +=  "<dd class=\"layui-nav-itemed\"><a href='javascript:;'>" + arr[j].name + "</a><dl class='layui-nav-child' >";
+                    html1 +=  getChildren(arr[j].children);
+                    html1 +=  "</dl></dd>";
+                }else{
+                    html1 += "<dd class=\"layui-nav-itemed\"><a href=\"javascript:;\">" + arr[j].name + "</a></dd>";
                 }
-                $("#menu").html(html);
-                var element = layui.element;
-                element.init();
+            }else{
+                html1 += "<dd class=\"layui-nav-itemed\">"+getAhtml(arr[j])+"</dd>";
             }
-        });
-        //JavaScript代码区域
-
+        }
+        return html1;
     }
+
+    function getAhtml(obj){
+        return "<a href=\"javascript:;\" onclick=\"addTab('" + obj.name + "','" + obj.url + "')\" >" + obj.name + "</a>";
+    }
+    //动态菜单
+    layui.jquery.ajax({
+        url: "/system/resources/getResourcesTree",
+        method: 'POST',
+        async: false,
+        success: function(results) {
+            var res = results.data;
+            var html = "";
+            for(var i = 0; i < res.length; i++) {
+                var  h= "<li class=\"layui-nav-item lay-unselect \" >";
+                if (res[i].url ==null){
+                    h += "<a href=\"javascript:;\">" + res[i].name + "</a>";
+                }else{
+                    h += getAhtml(res[i]);
+                }
+                if (res[i].children.length>0){
+                    h +=  "<dl class=\"layui-nav-child\" >";
+                    h += getChildren(res[i].children);
+                    h +=  "</dl>";
+                }
+                h += "</li>";
+                html +=h;
+            }
+            layui.jquery("#memus").html(html);
+            layui.element.init(); //一定初始化一次
+        }
+    })
+});
+
+//添加选项卡
+function addTab(name, url) {
+    if(layui.jquery(".layui-tab-title li[lay-id='" + name + "']").length > 0) {
+        //选项卡已经存在
+        layui.element.tabChange('tabDemo', name);
+        layer.msg('切换-' + name)
+    } else {
+        //动态控制iframe高度
+        var tabheight = layui.jquery(window).height();
+        contentTxt = '<iframe src="' + url + '" frameborder="0" class="layadmin-iframe" width="100%" height="' + (tabheight) + 'PX"></iframe>';
+        //新增一个Tab项
+        layui.element.tabAdd('tabDemo', {
+            title:name,
+            content: contentTxt,
+            id: name
+        })
+        //切换刷新
+        layui.element.tabChange('tabDemo', name)
+        layer.msg('新增-' + name)
+    }
+}
+
+function loginOut() {
+    layer.alert('墨绿风格，点击确认看深蓝', {
+        skin: 'layui-layer-molv' //样式类名
+        ,closeBtn: 0
+    }, function(){
+        layer.alert('偶吧深蓝style', {
+            skin: 'layui-layer-lan'
+            ,closeBtn: 0
+            ,anim: 4 //动画类型
+        });
+    });
+}
+
 </script>
 </body>
 </html>
