@@ -130,6 +130,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/plugin/**", "anon");
+        filterChainDefinitionMap.put("/upload/**", "anon");
+        filterChainDefinitionMap.put("/files/**", "anon");
         /* 登陆请求放行*/
         filterChainDefinitionMap.put("/loginIn", "anon");
         /*拦截所有资源 一定要放最后*/

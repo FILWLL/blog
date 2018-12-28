@@ -19,12 +19,37 @@ layui.use(['treetable', 'form', 'layer', 'tree'], function () {
     })
     //监听表格编辑
     treetable.on('treetable(edit)', function (data) {
-        layer.msg('编辑操作');
+        var item = data.item;
+
+        $("#testlayer").find("input[name='id']").val(item.id);
+        $("#testlayer").find("input[name='name']").val(item.name);
+        $("#testlayer").find("input[name='pid']").val(item.pid);
+
+
+
+        //打开编辑框
+        $("#testlayer").removeClass("layui-hide");
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-molv',
+            title: '用户信息',
+            shadeClose: true,
+            shade: 0.3,
+            offset: 't',
+            area: ['auto', 'auto'],
+            content: $("#testlayer"),
+            cancel: function (index, layero) {
+                document.getElementById("testlayer").reset();
+                $("#testlayer").addClass("layui-hide");
+            }
+        });
+        document.getElementById('treeclass').innerText = 'abc';
         console.dir(data);
     })
 
     //编辑框下拉树点击事件
     $(".downpanel").on("click", ".layui-select-title", function (e) {
+        console.log(e);
         $(".layui-form-select").not($(this).parents(".layui-form-select")).removeClass("layui-form-selected");
         $(this).parents(".downpanel").toggleClass("layui-form-selected");
         layui.stope(e);
@@ -96,8 +121,7 @@ layui.use(['treetable', 'form', 'layer', 'tree'], function () {
 
 
 
-
-    function treeinput() {
+    function getResourcesTree(){
         //获取菜单资源
         $.ajax({
             url: "/system/resources/getResourcesTree",
@@ -107,6 +131,9 @@ layui.use(['treetable', 'form', 'layer', 'tree'], function () {
                 data1 = results.data;
             }
         });
+    }
+    function treeinput() {
+        getResourcesTree();
         tree({
             elem: "#classtree"
             , nodes: data1

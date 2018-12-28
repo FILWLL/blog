@@ -1,6 +1,6 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/system/common :: header">
+<head th:include="/common :: header">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>layout 后台大布局 - Layui</title>
@@ -70,7 +70,7 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<div th:include="/system/common :: footer"></div>
+<div th:include="/common :: footer"></div>
 <script>
 layui.use(['element','layer'], function() {
     /*让tab的首页不出现删除选项*/

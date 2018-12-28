@@ -1,5 +1,7 @@
 package com.hjljy.blog.entity.system;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -204,6 +206,7 @@ public class Log implements Serializable {
      *
      * @param operationTime 操作时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public void setOperationTime(Date operationTime) {
         this.operationTime = operationTime;
     }

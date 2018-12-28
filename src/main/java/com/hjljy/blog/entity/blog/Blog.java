@@ -1,17 +1,17 @@
-package com.hjljy.blog.entity.system;
+package com.hjljy.blog.entity.blog;
 
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "t_blog_info")
 public class Blog {
+    @Id
     private Integer id;
 
     /**
      * 文章类型
      */
-    @Column(name = "typeId")
-    private Integer typeid;
+    private String type;
 
     /**
      * 文章标题
@@ -45,6 +45,21 @@ public class Blog {
     private Integer count;
 
     /**
+     * 博客路径
+     */
+    private String url;
+
+    /**
+     * 封面
+     */
+    private String face;
+
+    /**
+     * 摘要
+     */
+    private String abs;
+
+    /**
      * 内容
      */
     private String content;
@@ -66,19 +81,19 @@ public class Blog {
     /**
      * 获取文章类型
      *
-     * @return typeId - 文章类型
+     * @return type - 文章类型
      */
-    public Integer getTypeid() {
-        return typeid;
+    public String getType() {
+        return type;
     }
 
     /**
      * 设置文章类型
      *
-     * @param typeid 文章类型
+     * @param type 文章类型
      */
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     /**
@@ -187,6 +202,60 @@ public class Blog {
      */
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    /**
+     * 获取博客路径
+     *
+     * @return url - 博客路径
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * 设置博客路径
+     *
+     * @param url 博客路径
+     */
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
+    }
+
+    /**
+     * 获取封面
+     *
+     * @return face - 封面
+     */
+    public String getFace() {
+        return face;
+    }
+
+    /**
+     * 设置封面
+     *
+     * @param face 封面
+     */
+    public void setFace(String face) {
+        this.face = face == null ? null : face.trim();
+    }
+
+    /**
+     * 获取摘要
+     *
+     * @return abstract - 摘要
+     */
+    public String getAbs() {
+        return abs;
+    }
+
+    /**
+     * 设置摘要
+     *
+     * @param abs 摘要
+     */
+    public void setAbs(String abs) {
+        this.abs = abs == null ? null : abs.trim();
     }
 
     /**
