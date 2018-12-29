@@ -33,21 +33,16 @@
             <h2><span class="navicon"></span></h2>
             <ul>
                 <li><a href="index.html">网站首页</a></li>
-
-                <li><a href="html/share.html">模板分享</a></li>
                 <li><a href="html/list.html">学无止境</a></li>
 
-                <li><a href="html/gbook.html">留言</a></li>
                 <li><a href="html/about.html">关于我</a></li>
             </ul>
         </div>
         <nav class="topnav" id="topnav">
             <ul>
                 <li><a href="index.html">网站首页</a></li>
-                <li><a href="html/share.html">模板分享</a></li>
                 <li><a href="html/list.html">学无止境</a></li>
 
-                <li><a href="html/gbook.html">留言</a></li>
                 <li><a href="html/about.html">关于我</a></li>
             </ul>
         </nav>
@@ -133,11 +128,11 @@
                 for (var i = 0; i < results.length; i++) {
                     var d = results[i];
                     html += "<li>";
-                    html += "<h3 class='blogtitle'><a href='/'>" + d.title + "</a></h3>";
+                    html += "<h3 class='blogtitle'><a href='/"+d.url+"'>" + d.title + "</a></h3>";
                     html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
                     html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
                     html += "<span class='dtime'>" + d.createTime + "</span>";
-                    html += "<span class='readmore'><a href='" + d.url + "' >" + "阅读原文" + "</a></span>"
+                    html += "<span class='readmore'><a href='/" + d.url + "' >" + "阅读原文" + "</a></span>"
                     html += "</div></li>";
                 }
                 $(".blogs").append(html);

@@ -62,6 +62,6 @@ public class TemplatesUtil {
             System.out.println("错误信息1："+e.getMessage());
             e.printStackTrace();
         }
-        return "bloghtml"+name+".html";
+        return "bloghtml/"+name+".html";
     }
 }

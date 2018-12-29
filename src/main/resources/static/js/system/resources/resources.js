@@ -24,9 +24,6 @@ layui.use(['treetable', 'form', 'layer', 'tree'], function () {
         $("#testlayer").find("input[name='id']").val(item.id);
         $("#testlayer").find("input[name='name']").val(item.name);
         $("#testlayer").find("input[name='pid']").val(item.pid);
-
-
-
         //打开编辑框
         $("#testlayer").removeClass("layui-hide");
         layer.open({
