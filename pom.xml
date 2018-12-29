@@ -124,6 +124,7 @@
 
     <build>
         <finalName>ycfblog</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>

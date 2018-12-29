@@ -29,7 +29,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/system/account")
 public class AccountController extends BaseController{
-    public static String Path = "/system/account/";
+    public static String Path = "system/account/";
 
 
     private AccountService service;

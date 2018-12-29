@@ -1,6 +1,6 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common :: header">
+<head th:include="common :: header">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>layout 后台大布局 - Layui</title>
@@ -70,7 +70,7 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<div th:include="/common :: footer"></div>
+<div th:include="common :: footer"></div>
 <script>
 layui.use(['element','layer'], function() {
     /*让tab的首页不出现删除选项*/
@@ -135,7 +135,7 @@ function addTab(name, url) {
     } else {
         //动态控制iframe高度
         var tabheight = layui.jquery(window).height();
-        contentTxt = '<iframe src="' + url + '" frameborder="0" class="layadmin-iframe" width="100%" height="' + (tabheight) + 'PX"></iframe>';
+        contentTxt = '<iframe src="' + url + '" frameborder="0" class="layadmin-iframe" width="100%" height="' + 1200 + 'PX"></iframe>';
         //新增一个Tab项
         layui.element.tabAdd('tabDemo', {
             title:name,

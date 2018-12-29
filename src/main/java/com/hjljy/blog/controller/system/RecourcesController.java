@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/system/resources")
 public class RecourcesController extends BaseController{
 
-    public static String Path = "/system/resources/";
+    public static String Path = "system/resources/";
 
     private final ResourcesService resourcesService;
 

@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/system/role")
 public class RoleController extends BaseController {
 
-    public static String Path = "/system/role/";
+    public static String Path = "system/role/";
 
     @Autowired
     private RoleService service;

@@ -2,7 +2,7 @@
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <title>角色管理</title>
-<head th:include="/common :: header"></head>
+<head th:include="common :: header"></head>
 <body style="overflow:-Scroll;overflow-y:hidden !important;">
 <table class="layui-hide" lay-filter="test" id="demo"></table>
 <table class="layui-table layui-form layui-hide" id="test-tree-table"></table>
@@ -21,7 +21,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<div th:include="/common :: footer"></div>
+<div th:include="common :: footer"></div>
 <script>
     layui.config({
         base: '/plugin/layui-v2.4.5/model/',

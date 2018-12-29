@@ -1,5 +1,8 @@
 package com.hjljy.blog.controller.base;
 
+import com.hjljy.blog.common.AjaxJson;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,31 +22,29 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/upload")
-public class UploadController {
+public class UploadController extends BaseController {
+
+    @Value("${hjljy-upload-path}")
+    private  String uploadPath;
 
     @PostMapping("/upload1")
-    public Map<String, Object> upload1(@RequestParam("file") MultipartFile file,HttpServletRequest request) throws IOException {
-        String filename = file.getOriginalFilename();
-        String filePath = request.getSession().getServletContext().getRealPath("/images/");
-        System.out.println(filePath+ file.getOriginalFilename());
-        File targetFile = new File("/var/uploaded_files/");
+    public AjaxJson upload1(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        File targetFile = new File(uploadPath);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        FileOutputStream out = new FileOutputStream("/var/uploaded_files/" + "qwert1.png");
-        out.write(file.getBytes());
-        out.flush();
-        out.close();
-
-        Map<String, Object> result = new HashMap<>(16);
+        try {
+            FileOutputStream out = new FileOutputStream(uploadPath + file.getOriginalFilename());
+            out.write(file.getBytes());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            logger.error("文件上传错误："+e.getMessage());
+        }
+        AjaxJson ajaxJson = new AjaxJson();
         HashMap<String,String> list =new HashMap<>();
-
-        result.put("contentType", file.getContentType());
-        result.put("code", "0");
-        result.put("msg", "");
-        result.put("data", list);
-        result.put("fileName", file.getOriginalFilename());
-        result.put("fileSize", file.getSize() + "");
-        return result;
+        list.put("src", "/files/"+file.getOriginalFilename());
+        ajaxJson.setSuccessData(list);
+        return ajaxJson;
     }
 }

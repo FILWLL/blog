@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common :: header">
+<head th:include="common :: header">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -20,9 +20,9 @@
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">文本域</label>
+        <label class="layui-form-label">文章内容</label>
         <div class="layui-input-inline">
-            <textarea name="content" placeholder="请输入内容" id="layeditDemo"  class="layui-input"></textarea>
+            <textarea name="content" placeholder="请输入内容" id="layeditDemo"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
@@ -61,14 +61,15 @@
     </div>
 </script>
 
-<div th:include="/common :: footer"></div>
+<div th:include="common :: footer"></div>
 <script>
     layui.use(['table', 'form', 'layer', 'layedit'], function () {
             var table = layui.table,
-                layedit = layui.layedit;
-            layer = layui.layer,
+                layedit = layui.layedit,
+                layer = layui.layer,
                 $ = layui.$,
-                form = layui.form;
+                form = layui.form,
+                index = null;
             tableInit();
 
 
@@ -93,6 +94,13 @@
                             , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
                         ]
                     ]
+                    , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        //,curr: 5 //设定初始在第 5 页
+                        , groups: 4 //只显示 4 个连续页码
+                        , first: false //不显示首页
+                        , last: false //不显示尾页
+                    }
                 })
             }
 
@@ -121,6 +129,10 @@
 
 
             form.on('submit(formDemo)', function (data) {
+                var x = layedit.getContent(index);
+                console.log(x);
+                data.field.content=x;
+                console.log(data.field);
                 $.ajax({
                     url: "/blog/add"
                     , data: data.field
@@ -179,7 +191,7 @@
                     ]
                     , height: '90%'
                 });
-                var index = layedit.build('layeditDemo',{
+                index = layedit.build('layeditDemo', {
                     height: 400
                 });
 
@@ -215,7 +227,7 @@
                     }
                 });
                 textareaInit();
-                form.render();
+                // form.render();
             };
         }
     );

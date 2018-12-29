@@ -60,91 +60,48 @@
                 <h3>个人博客模板《早安》</h3>
             </div>
         </a></li>
-        <li><i><img src="images/b02.jpg"></i>
-        </a></li>
-        <li><i><img src="images/b03.jpg"></i>
-        </a></li>
         <li><i><img src="images/b04.jpg"></i>
-        </a></li>
+            </a></li>
+        <li><i><img src="images/b03.jpg"></i>
+            </a></li>
         <li><i><img src="images/b05.jpg"></i>
-        </a></li>
+            </a></li>
+        <li><i><img src="images/b02.jpg"></i>
+            </a></li>
     </ul>
 </div>
 <article>
     <div class="blogs">
-        <li><span class="blogpic"><a href="/"><img src="images/text02.jpg"></a></span>
-            <h3 class="blogtitle"><a href="/">陌上花开，可缓缓归矣</a></h3>
-            <div class="bloginfo">
-                <p>用最简单的代码，实现瀑布流布局，没有繁琐的css，没有jq，只需要做到以下就可以实现瀑布流的效果。思路很简单，看成是三列布局，分别用三个ul来调用。帝国cms列表模板，...</p>
-            </div>
-            <div class="autor"><span class="lm"><a href="#" title="CSS3|Html5" target="_blank" class="classname">CSS3|Html5</a></span><span
-                    class="dtime">2018-12-29</span><span class="viewnum">浏览（<a href="#">0</a>）</span><span
-                    class="readmore"><a href="#">阅读原文</a></span></div>
-        </li>
-        <li><span class="blogpic"><a href="#"><img src="images/text01.jpg"></a></span>
-            <h3 class="blogtitle"><a href="#">学而时习之，不亦说乎</a></h3>
-            <div class="bloginfo">
-                <p>人生的高度， 不是你看清了多少事， 而是你看轻了多少事。 心灵的宽度， 不是你认识了多少人， 而是你包容了多少人。 做人如山， 望万物，而容万物。 做人似水， 能进退，而知进退...</p>
-            </div>
-            <div class="autor"><span class="lm"><a href="/" title="CSS3|Html5" target="_blank" class="classname">CSS3|Html5</a></span><span
-                    class="dtime">2018-12-29</span><span class="viewnum">浏览（<a href="/">0</a>）</span><span
-                    class="readmore"><a href="/">阅读原文</a></span></div>
-        </li>
     </div>
     <div class="sidebar">
         <div class="about">
             <div class="avatar"><img src="images/avatar.jpg" alt=""></div>
             <p class="abname">海加尔金鹰</p>
             <p class="abposition">JAVA开发</p>
-            <div class="abtext"> 一个90后的，尽管白发生，但是不秃头的后端开发人员</div>
+            <div class="abtext"> 一个90后的，爱玩游戏的，爱生活的，发际线慢慢上升的的后端开发人员</div>
         </div>
-        <!--<div class="search">
-            <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
-                <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+        <div class="search">
+            <form  onsubmit="return false;" method="get" name="searchform" id="searchform">
+                <input name="title" id="keyboard" class="input_text"
                        style="color: rgb(153, 153, 153);"
-                       onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
-                       onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
-                <input name="show" value="title" type="hidden">
-                <input name="tempid" value="1" type="hidden">
-                <input name="tbname" value="news" type="hidden">
-                <input name="Submit" class="input_submit" value="搜索" type="submit">
+                       onfocus="if(value=='请输入文章名称'){this.style.color='#000';value=''}"
+                       onblur="if(value==''){this.style.color='#999';value='请输入文章名称'}" type="text">
+                <input class="input_submit" value="搜索" type="submit" onclick="getBlogByCreateTime()">
             </form>
-        </div>-->
+        </div>
         <div class="cloud">
             <h2 class="hometitle">标签云</h2>
             <ul>
-                <a href="/">陌上花开</a> <a href="/">校园生活</a> <a href="/">html5</a>  <a
-                    href="/">青春</a> <a href="/">温暖</a> <a href="/">阳光</a> <a href="/">java</a><a href="/">spring</a>
-            </ul>
-        </div>
-        <div class="paihang">
-            <h2 class="hometitle">点击排行</h2>
-            <ul>
-                <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
-                    <p><i><img src="images/t02.jpg"></i>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
-                </li>
-
-            </ul>
-        </div>
-        <div class="paihang">
-            <h2 class="hometitle">站长推荐</h2>
-            <ul>
-                <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
-                    <p><i><img src="images/t02.jpg"></i>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
-                </li>
-
+                <a href="/">springboot</a> <a href="/">mybatis</a> <a href="/">html5</a>
+                <a href="/">JAVA</a> <a href="/">数据库</a> <a href="/">linux</a> <a href="/">JavaScript</a><a href="/">spring</a>
+                <a href="/">学习日记</a>
             </ul>
         </div>
         <div class="links">
             <h2 class="hometitle">友情链接</h2>
             <ul>
                 <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
-            </ul>
-        </div>
-        <div class="weixin">
-            <h2 class="hometitle">官方微信</h2>
-            <ul>
-                <img src="images/wx.jpg">
+                <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
             </ul>
         </div>
     </div>
@@ -154,5 +111,39 @@
     <p>Design by <a href="/">弋超帆个人博客</a> <a href="/">蜀ICP备18038277号</a></p>
 </footer>
 <script src="js/nav.js"></script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script>
+    $(function () {
+        getBlogByCreateTime();
+    })
+
+    function getBlogByCreateTime() {
+        var title=$("#keyboard").val();
+        $.ajax({
+            url: "/blog/getBlogByPage"
+            , async: false
+            , type: "get"
+            , data :{"title":title}
+            , dataType: "json"
+            , success: function (data) {
+                var results = data.data;
+                $(".blogs").innerHTML="";
+                $(".blogs").children().remove();
+                var html = "";
+                for (var i = 0; i < results.length; i++) {
+                    var d = results[i];
+                    html += "<li>";
+                    html += "<h3 class='blogtitle'><a href='/'>" + d.title + "</a></h3>";
+                    html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
+                    html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
+                    html += "<span class='dtime'>" + d.createTime + "</span>";
+                    html += "<span class='readmore'><a href='" + d.url + "' >" + "阅读原文" + "</a></span>"
+                    html += "</div></li>";
+                }
+                $(".blogs").append(html);
+            }
+        });
+    }
+</script>
 </body>
 </html>

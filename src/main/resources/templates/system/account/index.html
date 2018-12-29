@@ -3,7 +3,8 @@
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="UTF-8">
 <title>用户管理</title>
-<head th:include="/common :: header"></head>
+<head th:include="common :: header"></head>
+
 
 <body>
 
@@ -139,7 +140,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<div th:include="/common :: footer"></div>
+<div th:include="common :: footer"></div>
 <script th:src="@{/js/system/account/account.js}">
 </script>
 </body>
