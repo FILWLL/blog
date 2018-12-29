@@ -10,6 +10,7 @@ import com.hjljy.blog.common.utils.TemplatesUtil;
 import com.hjljy.blog.controller.base.BaseController;
 import com.hjljy.blog.entity.blog.Blog;
 import com.hjljy.blog.service.blog.BlogService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,6 +66,9 @@ public class BlogController extends BaseController<Blog> {
         String url = TemplatesUtil.createHtml(blog.getCreateTime().getTime() + blog.getTitle(), blog.getContent());
         blog.setUrl(url);
         if(blog.getAbs()==null){
+            blog.setAbs("人生的高度， 不是你看清了多少事， 而是你看轻了多少事。 心灵的宽度， 不是你认识了多少人， 而是你包容了多少人。 做人如山， 望万物，而容万物。 做人似水， 能进退，而知进退...");
+        }
+        if(StringUtils.isEmpty(blog.getAbs())){
             blog.setAbs("人生的高度， 不是你看清了多少事， 而是你看轻了多少事。 心灵的宽度， 不是你认识了多少人， 而是你包容了多少人。 做人如山， 望万物，而容万物。 做人似水， 能进退，而知进退...");
         }
         blogService.insertSelective(blog);
