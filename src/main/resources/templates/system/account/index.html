@@ -56,14 +56,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">是否禁用</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="status"lay-skin="switch" value="1" lay-text="否|是" checked>
+            <input type="checkbox" name="status"lay-skin="switch" value="1" lay-text="否|是">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">单选框</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="男" checked>
-            <input type="radio" name="sex" value="0" title="女">
+            <input type="radio" name="sex" data-id="1" value="1" title="男" checked>
+            <input type="radio" name="sex" data-id="0" value="0" title="女">
         </div>
     </div>
     <div class="layui-form-item">
@@ -93,7 +93,7 @@
     </div>
 </form>
 
-<!--展示信息-->
+<!--查询表单-->
 <form class="layui-form layui-form-pane" method="POST" onsubmit="return false;">
     <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
@@ -109,7 +109,7 @@
             <input type="text" name="orgName" placeholder="请输入部门" autocomplete="off" class="layui-input">
         </div>
         <div class="layui-input-inline">
-            <button class="layui-btn layui-btn-warm" onclick="searchData()"><i
+            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="formSearch"><i
                     class="layui-icon layui-icon-search"></i></button>
         </div>
     </div>
@@ -119,26 +119,26 @@
 <!--工具组件-->
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn   layui-btn-radius" lay-event="add">
+        <button shiro:hasPermission="sys:account:add" class="layui-btn   layui-btn-radius" lay-event="add">
             <i class="layui-icon">&#xe608;</i> 添加
         </button>
-        <button class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="delBatch">
+        <button shiro:hasPermission="sys:account:del" class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="delBatch">
             <i class="layui-icon">&#xe640;</i>批量删除
         </button>
     </div>
 </script>
 <script type="text/html" id="switchTpl">
-    <input type="checkbox" name="sex" value="{{d.sex}}" lay-skin="switch" lay-text="男|女" lay-filter="sexDemo" {{ d.sex==
+    <input type="checkbox" name="sex" data-id="{{d.id}}" value="{{d.sex}}" lay-skin="switch" lay-text="男|女" lay-filter="sexDemo" {{ d.sex==
            1 ? 'checked' : '' }}>
 </script>
 <script type="text/html" id="checkboxTpl">
-    <input type="checkbox" name="lock" value="{{d.status}}" title="禁用" lay-filter="lockDemo" {{ d.status== false
+    <input type="checkbox" name="status" data-id="{{d.id}}" value="{{d.status}}" title="禁用" lay-filter="lockDemo" {{ d.status== false
            ? 'checked' : '' }}>
 </script>
 <script type="text/html" id="barDemo">
-    <button class="layui-btn layui-btn-xs" lay-event="repwd">重置密码</button>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <button shiro:hasPermission="sys:account:rpwd" class="layui-btn layui-btn-xs" lay-event="repwd">重置密码</button>
+    <a shiro:hasPermission="sys:account:add" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a shiro:hasPermission="sys:account:del" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <div th:include="common :: footer"></div>
 <script th:src="@{/js/system/account/account.js}">

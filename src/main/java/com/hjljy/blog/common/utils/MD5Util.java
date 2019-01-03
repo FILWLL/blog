@@ -15,18 +15,18 @@ public class MD5Util {
     private static final int HASH_ITERATIONS = 500;
 
     /**
-     * 加密加盐加次数  根据用户名和固定salt组成新的salt
-     * @param username
+     * 加密加盐加次数
+     *
      * @param pswd
      * @return
      */
-    public static String encrypt(String username, String pswd) {
-        String newPassword = new SimpleHash("md5", pswd, ByteSource.Util.bytes(username + SALT),
+    public static String encrypt( String pswd) {
+        String newPassword = new SimpleHash("md5", pswd, ByteSource.Util.bytes( SALT),
                 HASH_ITERATIONS).toHex();
         return newPassword;
     }
 
-/*    public static void main(String[] args) {
-        System.out.println(encrypt("admin", "123456"));
-    }*/
+    public static void main(String[] args) {
+        System.out.println(encrypt( "123456"));
+    }
 }

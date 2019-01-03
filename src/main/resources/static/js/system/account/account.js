@@ -4,9 +4,108 @@ layui.use(['table', 'form', 'layer'], function () {
         $ = layui.$,
         form = layui.form;
     tableInit();
+    //头工具栏事件
+    table.on('toolbar(test)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch (obj.event) {
+            case 'add':
+                openForm();
+                break;
+            case 'delBatch':
+                layer.confirm('确认删除么？', {anim: 6, offset: '100px'}, function (index) {
+                    var data = checkStatus.data;
+                    var ids = [];
+                    for (var i = 0; i < data.length; i++) {
+                        ids.push(data[i].id);
+                    }
+                    delBatch(ids.toString());
+                    layer.close(index);
+                });
+                break;
+        }
+        ;
+    });
+    //监听行工具事件
+    table.on('tool(test)', function (obj) {
+        var data = obj.data;
+        var id = data.id;
+        if (obj.event === 'del') {
+            layer.confirm('真的删除行么', {anim: 6, offset: '100px'}, function (index) {
+                delBatch(id);
+                layer.close(index);
+            });
+        } else if (obj.event === 'edit') {
+            openForm(data);
+        } else if (obj.event === 'repwd') {
+            layer.prompt({
+                formType: 1,
+                title: '请输入新密码',
+                offset: 't',
+                area: ['800px', '350px'] //自定义文本域宽高
+            }, function (value, index, elem) {
+                setNpwd({pwd:value,id:id});
+                alert(value); //得到value
+                layer.close(index);
+            });
+        }
+    });
+    //监听性别操作
+    form.on('switch(sexDemo)', function (obj) {
+        var id = $(this).attr("data-id");
+        var sex = this.value;
+        if (this.value == 1) {
+            sex = 0;
+        } else {
+            sex = 1;
+        }
+        addOrEdit({sex: sex, id: id});
+    });
+    //监听锁定操作
+    form.on('checkbox(lockDemo)', function (obj) {
+        var id = $(this).attr("data-id");
+        console.log(this.value)
+        if (this.value == 'false') {
+            status = true;
+        } else {
+            status = false;
+        }
+        addOrEdit({status: status, id: id});
+    });
+    //监听编辑表单提交操作
+    form.on('submit(formDemo)', function (data) {
+        if (data.field.status != true) {
+            data.field.status = false
+        }
+        addOrEdit(data.field);
+        document.getElementById("testlayer").reset();
+        $("#testlayer").addClass("layui-hide");
+        layer.closeAll('page');
+    });
+    //监听查询表单提交操作
+    form.on('submit(formSearch)', function (data) {
+        console.log(data.field);
+        layer.msg('还未进行开发', {icon: 5});
+    });
 
-    //第一个实例
+    /**重置密码 */
+    function setNpwd(pwd) {
+        $.ajax({
+            url: "/system/account/rpwd"
+            , data: pwd
+            , async: false
+            , type: "post"
+            , dataType: "json"
+            , success: function (data) {
+                if (data.success) {
+                    layer.msg(data.msg, {icon: 1});
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+            }
+        });
+    }
 
+    /**表格初始化*/
     function tableInit() {
         table.render({
             elem: '#demo'
@@ -43,76 +142,30 @@ layui.use(['table', 'form', 'layer'], function () {
         })
     }
 
-    //头工具栏事件
-    table.on('toolbar(test)', function (obj) {
-        var checkStatus = table.checkStatus(obj.config.id);
-        switch (obj.event) {
-            case 'add':
-                addOrEdit();
-                break;
-            case 'delBatch':
-                layer.confirm('确认删除么？',{anim: 6,offset: '100px'}, function (index) {
-                    var data = checkStatus.data;
-                    var ids = [];
-                    for (var i = 0; i < data.length; i++) {
-                        ids.push(data[i].id);
-                    }
-                    delBatch(ids.toString());
-                    layer.close(index);
-                });
-
-                break;
-        };
-    });
-
-    //监听行工具事件
-    table.on('tool(test)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'del') {
-            layer.confirm('真的删除行么',{anim: 6,offset: '100px'}, function (index) {
-                delBatch(data.id);
-                layer.close(index);
-            });
-        } else if (obj.event === 'edit') {
-            addOrEdit(data);
-        }
-    });
-
-    //监听性别操作
-    form.on('switch(sexDemo)', function (obj) {
-        layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-    });
-    //监听锁定操作
-    form.on('checkbox(lockDemo)', function (obj) {
-        layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-    });
-    //监听表单提交操作
-    form.on('submit(formDemo)', function (data) {
+    /**
+     * 添加及修改操作
+     * @param data
+     */
+    function addOrEdit(data) {
         $.ajax({
             url: "/system/account/addOrEdit"
-            , data: data.field
+            , data: data
             , async: false
             , type: "post"
             , dataType: "json"
             , success: function (data) {
-                document.getElementById("testlayer").reset();
-                $("#testlayer").addClass("layui-hide");
-                tableInit();
-                layer.closeAll('page');
                 if (data.success) {
-                    layer.msg(data.msg);
+                    layer.msg(data.msg, {icon: 1});
                 } else {
-                    layer.msg(data.msg);
+                    layer.msg(data.msg, {icon: 2});
                 }
             }
         });
-    });
+        tableInit();
+    }
 
-    /*添加和编辑弹出框*/
-    function addOrEdit(data) {
-        /**
-         * 先加载角色数据
-         */
+    /**加载角色数据*/
+    function getRole() {
         $.ajax({
             url: "/system/role/getRoles/"
             , async: false
@@ -127,12 +180,18 @@ layui.use(['table', 'form', 'layer'], function () {
                 }
             }
         });
+    }
 
+    /**添加和编辑弹出框*/
+    function openForm(data) {
+        getRole();
         if (data == null) {
             $("#testlayer #pwd").removeClass("layui-hide");
             document.getElementById("pw").setAttribute("lay-verify", "required");
         } else {
             $("#testlayer #pwd").addClass("layui-hide");
+            console.log("afafa:" + data.status)
+            console.log(data)
             document.getElementById("pw").setAttribute("lay-verify", "");
             $("#testlayer").find("input[name='id']").val(data.id);
             $("#testlayer").find("input[name='username']").val(data.username);
@@ -140,7 +199,7 @@ layui.use(['table', 'form', 'layer'], function () {
             $("#testlayer").find("input[name='email']").val(data.email);
             $("#testlayer").find("input[name='status']")[0].checked = data.status;
             $("#testlayer").find("input[name='address']").val(data.address);
-            $("#testlayer").find("input[value='" + data.sex + "']")[0].checked = true;
+            $("#testlayer").find("input[data-id='" + data.sex + "']")[0].checked = true;
             $("#testlayer").find("select[name='roleId']").val(data.roleId);
             $("#testlayer").find("textarea[name='description']").val(data.description);
         }
@@ -151,7 +210,7 @@ layui.use(['table', 'form', 'layer'], function () {
             type: 1,
             skin: 'layui-layer-molv',
             title: '用户信息',
-            shadeClose: true,
+            shadeClose: false,
             shade: 0.3,
             offset: 't',
             area: ['auto', 'auto'],
@@ -175,11 +234,18 @@ layui.use(['table', 'form', 'layer'], function () {
             , data: {"ids": ids}
             , dataType: "json"
             , success: function (data) {
-                tableInit();
-                layer.msg(data.msg);
+                if (data.success) {
+                    layer.msg(data.msg, {icon: 1});
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
             }
         });
+        tableInit();
     }
+
+
 });
+
 
 

@@ -115,7 +115,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //跳转到登录界面的url
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/");
         //登录成功后跳转的URL
         shiroFilterFactoryBean.setSuccessUrl("/system/index");
         //没有权限的URL

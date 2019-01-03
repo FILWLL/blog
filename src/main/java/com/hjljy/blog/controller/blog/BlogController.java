@@ -63,7 +63,7 @@ public class BlogController extends BaseController<Blog> {
             blog.setAuthor(ShiroSessionUtil.getAccountName());
         }
         blog.setCreateTime(new Date());
-        String url = TemplatesUtil.createHtml(blog.getCreateTime().getTime() + blog.getTitle(), blog.getContent());
+        String url = TemplatesUtil.createHtml(blog.getTitle()+blog.getCreateTime().getTime(), blog.getContent(),blog.getTitle());
         blog.setUrl(url);
         if(blog.getAbs()==null){
             blog.setAbs("人生的高度， 不是你看清了多少事， 而是你看轻了多少事。 心灵的宽度， 不是你认识了多少人， 而是你包容了多少人。 做人如山， 望万物，而容万物。 做人似水， 能进退，而知进退...");

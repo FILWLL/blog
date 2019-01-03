@@ -37,7 +37,7 @@
             <input type="text" name="tags" lay-verify="required" placeholder="请输入标签" autocomplete="off"
                    class="layui-input">
         </div>
-        <label class="layui-form-label">选择框</label>
+        <label class="layui-form-label">文章类型</label>
         <div class="layui-input-inline">
             <select name="type" lay-verify="required">
                 <option value="原创">原创</option>
@@ -63,6 +63,9 @@
 <table class="layui-hide" lay-filter="test" id="demo"></table>
 
 
+
+<div th:include="common :: footer"></div>
+
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn   layui-btn-radius" lay-event="add">
@@ -73,8 +76,9 @@
         </button>
     </div>
 </script>
+<script src="/js/ace/ace.js">
 
-<div th:include="common :: footer"></div>
+</script>
 <script>
     layui.use(['table', 'form', 'layer', 'layedit'], function () {
             var table = layui.table,
@@ -84,8 +88,6 @@
                 form = layui.form,
                 index = null;
             tableInit();
-
-
             function tableInit() {
                 table.render({
                     elem: '#demo'
@@ -195,10 +197,11 @@
                     //插入代码设置
                     , codeConfig: {
                         hide: true,  //是否显示编码语言选择框
-                        default: 'java' //hide为true时的默认语言格式
+                        default: 'java', //hide为true时的默认语言格式
+                        encode:true
                     }
                     , tool: [
-                        'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'fontFomatt', 'colorpicker', 'face'
+                        'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'removeFormat','fontFomatt','fontfamily','fontSize', 'colorpicker', 'face'
                         , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt', 'video', 'anchors'
                         , '|', 'table', 'fullScreen'
                     ]
@@ -212,17 +215,6 @@
 
             /*添加和编辑弹出框*/
             function addOrEdit(data) {
-                /*                $.ajax({
-                                    url: "/blog/add/"
-                                    , async: false
-                                    , type: "post"
-                                    , dataType: "json"
-                                    , success: function (data) {
-
-                                    }
-                                });*/
-
-
                 $("#testlayer").removeClass("layui-hide");
                 //打开编辑框
                 layer.open({
@@ -232,7 +224,7 @@
                     shadeClose: true,
                     shade: 0.3,
                     offset: 't',
-                    area: ['1200px', '780px'],
+                    area: ['1260px', '780px'],
                     content: $("#testlayer"),
                     cancel: function () {
                         document.getElementById("testlayer").reset();
@@ -240,7 +232,6 @@
                     }
                 });
                 textareaInit();
-                // form.render();
             };
         }
     );

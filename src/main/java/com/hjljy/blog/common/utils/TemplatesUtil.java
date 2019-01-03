@@ -36,7 +36,7 @@ public class TemplatesUtil {
 
     }
 
-    public static String createHtml(String name,String content) {
+    public static String createHtml(String name,String content,String title) {
 
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix("templates/");//模板所在目录，相对于当前classloader的classpath。
@@ -47,6 +47,7 @@ public class TemplatesUtil {
         //构造上下文(Model)
         Context context = new Context();
         context.setVariable("content", content);
+        context.setVariable("title", title);
         File targetFile = new File("/var/html/");
         if (!targetFile.exists()) {
             targetFile.mkdirs();

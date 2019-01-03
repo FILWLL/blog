@@ -4,15 +4,12 @@
     <meta name="baidu-site-verification" content="chO9cDCggD"/>
     <meta charset="gb2312">
     <title>首页_海加尔金鹰的个人博客</title>
-    <meta name="keywords" content="个人博客,海加尔金鹰的个人博客,个人博客,海加尔金鹰,弋超帆"/>
-    <meta name="description" content="海加尔金鹰个人博客，是一个个人技术学校记录网站。"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="hjljy,弋超帆的个人博客,海加尔金鹰的个人博客,,海加尔金鹰,弋超帆"/>
+    <meta name="description" content="海加尔金鹰个人博客，是一个个人技术学习记录网站。"/>
     <link href="css/base.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
     <link href="css/m.css" rel="stylesheet">
-    <!--[if lt IE 9]>
     <script src="js/modernizr.js"></script>
-    <![endif]-->
     <script>
         window.onload = function () {
             var oH2 = document.getElementsByTagName("h2")[0];
@@ -76,7 +73,7 @@
             <div class="abtext"> 一个90后的，爱玩游戏的，爱生活的，发际线慢慢上升的的后端开发人员</div>
         </div>
         <div class="search">
-            <form  onsubmit="return false;" method="get" name="searchform" id="searchform">
+            <form onsubmit="return false;" method="get" name="searchform" id="searchform">
                 <input name="title" id="keyboard" class="input_text"
                        style="color: rgb(153, 153, 153);"
                        onfocus="if(value=='请输入文章名称'){this.style.color='#000';value=''}"
@@ -113,22 +110,22 @@
     })
 
     function getBlogByCreateTime() {
-        var title=$("#keyboard").val();
+        var title = $("#keyboard").val();
         $.ajax({
             url: "/blog/getBlogByPage"
             , async: false
             , type: "get"
-            , data :{"title":title}
+            , data: {"title": title}
             , dataType: "json"
             , success: function (data) {
                 var results = data.data;
-                $(".blogs").innerHTML="";
+                $(".blogs").innerHTML = "";
                 $(".blogs").children().remove();
                 var html = "";
                 for (var i = 0; i < results.length; i++) {
                     var d = results[i];
                     html += "<li>";
-                    html += "<h3 class='blogtitle'><a href='/"+d.url+"'>" + d.title + "</a></h3>";
+                    html += "<h3 class='blogtitle'><a href='/" + d.url + "'>" + d.title + "</a></h3>";
                     html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
                     html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
                     html += "<span class='dtime'>" + d.createTime + "</span>";

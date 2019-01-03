@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Auther: HJLJY
  * @Date: 2018/12/27 0027 16:39
- * @Description:  将上传资源添加到
+ * @Description:  将上传资源添加到映射当中
  */
 @Component
 public class WebConfigurer implements WebMvcConfigurer {

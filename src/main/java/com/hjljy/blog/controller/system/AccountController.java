@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hjljy.blog.common.AjaxJson;
 import com.hjljy.blog.common.Const;
+import com.hjljy.blog.common.annotation.BlogLog;
 import com.hjljy.blog.common.utils.MD5Util;
 import com.hjljy.blog.common.utils.ShiroSessionUtil;
 import com.hjljy.blog.controller.base.BaseController;
@@ -31,7 +32,6 @@ import java.util.List;
 public class AccountController extends BaseController{
     public static String Path = "system/account/";
 
-
     private AccountService service;
 
     @Autowired
@@ -39,12 +39,13 @@ public class AccountController extends BaseController{
         this.service = service;
     }
 
+
     @RequiresPermissions("sys:account:index")
     @RequestMapping("/index")
     public String index(){
         return Path+"index";
     }
-
+    @BlogLog(description = "查询用户信息")
     @RequiresPermissions("sys:account:index")
     @RequestMapping("/getAccountByPage")
     @ResponseBody
@@ -56,14 +57,13 @@ public class AccountController extends BaseController{
         return aj;
     }
 
+    @BlogLog(description = "添加或者编辑用户信息")
+    @RequiresPermissions("sys:account:add")
     @RequestMapping("/addOrEdit")
     @ResponseBody
     public AjaxJson addOrEdit(Account account){
         AjaxJson aj = new AjaxJson();
-        /* layui开关选择只会传一个true 所以要进行判断*/
-        if(account.getStatus()==null){
-            account.setStatus(false);
-        }
+
         if(account.getId()!=null){
             account.setUpdater(ShiroSessionUtil.getAccountName());
             account.setModifiedTime(new Date());
@@ -72,7 +72,7 @@ public class AccountController extends BaseController{
             return aj;
         }
         account.setCreateTime(new Date());
-        String pwd = MD5Util.encrypt(account.getUsername(), account.getPassword());
+        String pwd = MD5Util.encrypt(account.getPassword());
         account.setPassword(pwd);
         account.setCreator(ShiroSessionUtil.getAccountName());
         service.insert(account);
@@ -80,11 +80,27 @@ public class AccountController extends BaseController{
         return aj;
     }
 
+    @BlogLog(description = "删除用户信息")
+    @RequiresPermissions("sys:account:del")
     @RequestMapping("/delBatch")
     @ResponseBody
     public AjaxJson delBatch(String ids){
         AjaxJson aj = new AjaxJson();
         service.deleteByIds(ids);
+        aj.setSuccessMsg(Const.OP_SUCCEED);
+        return aj;
+    }
+
+    @BlogLog(description = "重置用户密码")
+    @RequiresPermissions("sys:account:rpwd")
+    @RequestMapping("/rpwd")
+    @ResponseBody
+    public AjaxJson Rpwd(String pwd,Integer id){
+        AjaxJson aj = new AjaxJson();
+        Account account = new Account();
+        account.setId(id);
+        account.setPassword(MD5Util.encrypt(pwd));
+        service.updateSelectiveById(account);
         aj.setSuccessMsg(Const.OP_SUCCEED);
         return aj;
     }

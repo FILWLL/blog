@@ -37,7 +37,7 @@ public class LoginController extends BaseController {
     @PostMapping("/loginIn")
     public String loginIn(String username, String password, RedirectAttributes model){
         //输入密码进行加密之后在进行对比
-        password = MD5Util.encrypt(username,password );
+        password = MD5Util.encrypt(password );
         System.out.println(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();

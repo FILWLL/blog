@@ -1,10 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="baidu-site-verification" content="chO9cDCggD"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${title}">学无止境_海加尔金鹰个人博客</title>
+    <meta name="keywords" content="hjljy,弋超帆个人博客,海加尔金鹰个人博客,弋超帆,海加尔金鹰"/>
+    <meta name="description" content="海加尔金鹰个人博客。"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+    <link href="../css/m.css" rel="stylesheet">
+    <link href="../plugin/layui-v2.4.5/layui/css/layui.css" rel="stylesheet">
+    <script src="../js/modernizr.js"></script>
+    <script>
+        window.onload = function () {
+            var oH2 = document.getElementsByTagName("h2")[0];
+            var oUl = document.getElementsByTagName("ul")[0];
+            oH2.onclick = function () {
+                var style = oUl.style;
+                style.display = style.display == "block" ? "none" : "block";
+                oH2.className = style.display == "block" ? "open" : ""
+            }
+        }
+    </script>
 </head>
 <body>
-<div th:utext="${content}">casfafafsa</div>
+<header>
+    <div class="tophead">
+        <div class="logo"><a href="/">海加尔金鹰个人博客</a></div>
+        <div id="mnav">
+            <h2><span class="navicon"></span></h2>
+            <ul>
+                <li><a href="/">网站首页</a></li>
+                <li><a href="/html/list.html">学无止境</a></li>
+                <li><a href="/html/about.html">关于我</a></li>
+            </ul>
+        </div>
+        <nav class="topnav" id="topnav">
+            <ul>
+                <li><a href="/">网站首页</a></li>
+                <li><a href="/html/list.html">学无止境</a></li>
+                <li><a href="/html/about.html">关于我</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<article>
+    <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span>
+        <a href="/" class="n1">网站首页</a><a href="/html/list.html" class="n2">学无止境</a>
+    </h1>
+    <div class="blogs">
+        <div th:utext="${content}" class="news_infos">
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="search">
+            <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+                <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+                       style="color: rgb(153, 153, 153);"
+                       onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
+                       onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+                <input name="show" value="title" type="hidden">
+                <input name="tempid" value="1" type="hidden">
+                <input name="tbname" value="news" type="hidden">
+                <input name="Submit" class="input_submit" value="搜索" type="submit">
+            </form>
+        </div>
+        <div class="lmnav">
+            <h2 class="hometitle">栏目导航</h2>
+            <ul class="navbor">
+
+                <li><a href="/html/list.html">学无止境</a>
+                    <ul>
+                        <li><a href="/html/list.html">学习笔记</a></li>
+                        <li><a href="#">Springboot</a></li>
+                        <li><a href="#">CSS3|HTML5</a></li>
+                        <li><a href="#">JAVA|JDBC</a></li>
+                        <li><a href="#">Linux|Tomcat</a></li>
+                        <li><a href="#">Hive|Spark</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">关于我</a></li>
+            </ul>
+        </div>
+        <div class="cloud">
+            <h2 class="hometitle">标签云</h2>
+            <ul>
+                <a href="/">springboot</a> <a href="/">mybatis</a> <a href="/">html5</a>
+                <a href="/">JAVA</a> <a href="/">数据库</a> <a href="/">linux</a> <a href="/">JavaScript</a><a href="/">spring</a>
+                <a href="/">学习笔记</a>
+            </ul>
+        </div>
+        <div class="paihang">
+            <h2 class="hometitle">学习笔记</h2>
+            <!--  <ul>
+                <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
+                  <p><i><img src="../images/t02.jpg"></i>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
+                </li>
+                <li><b><a href="#" target="_blank">【匆匆那些年】总结个人博客经历的这四年…30...</a></b>
+                  <p><i><img src="../images/mb02.jpg"></i>博客从最初的域名购买，到上线已经有四年的时间了，这四年的时间，有笑过，有怨过，有悔过，有执着过，也...</p>
+                </li>
+              </ul>-->
+        </div>
+        <div class="links">
+            <h2 class="hometitle">友情链接</h2>
+            <ul>
+                <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
+                <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
+            </ul>
+        </div>
+    </div>
+</article>
+<footer>
+    <p>Design by <a href="www.hjljy.cn">海加尔金鹰个人博客</a> <a href="/">蜀ICP备18038277号</a></p>
+</footer>
+<script src="../js/nav.js"></script>
 </body>
 </html>
