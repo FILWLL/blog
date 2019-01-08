@@ -3,10 +3,12 @@ package com.hjljy.blog.service.base;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjljy.blog.common.PageData;
 import com.hjljy.blog.mapper.base.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +43,8 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public Optional<T> selectById(Object key) {
-        return Optional.ofNullable(mapper.selectByPrimaryKey(key));
+    public T selectById(Object key) {
+        return mapper.selectByPrimaryKey(key);
     }
 
 
@@ -63,15 +65,14 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public PageInfo<T> listForDataGrid(Page<T> grid) {
-        System.out.println(grid.toString());
+    public PageInfo<T> listForDataGrid(PageData grid) {
         return this.listForDataGrid(grid, null);
     }
 
     @Override
-    public PageInfo<T> listForDataGrid(Page<T> grid, T entity) {
-        PageHelper.startPage(grid.getPageSize(), grid.getPageNum());
-        return new PageInfo<>(mapper.select(entity));
+    public PageInfo<T> listForDataGrid(PageData grid, Example entity) {
+        PageHelper.startPage(grid.getPage(), grid.getLimit(),grid.getOrderBy());
+        return new PageInfo<>(mapper.selectByExample(entity));
     }
 
     @Override

@@ -12,6 +12,16 @@ public class PageData implements Serializable {
     private int limit = 10;
     private int page = 1;
 
+    private String orderBy ="create_time desc";
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
     public int getLimit() {
         return limit;
     }

@@ -2,6 +2,8 @@ package com.hjljy.blog.service.base;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.hjljy.blog.common.PageData;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +53,7 @@ public interface BaseService<T> {
      * @param key 主键
      * @return 操作结果
      */
-    Optional<T> selectById(Object key);
+    T selectById(Object key);
 
     /**
      * 根据主键更新实体全部字段( 公共属性部分不必赋值，入库拦截前会自动将修改人 修改时间加上)
@@ -82,7 +84,7 @@ public interface BaseService<T> {
      * @param grid 分页对象
      * @return 查询结果
      */
-    PageInfo<T> listForDataGrid(Page<T> grid);
+    PageInfo<T> listForDataGrid(PageData grid);
 
     /**
      * 带条件分页查询
@@ -91,7 +93,7 @@ public interface BaseService<T> {
      * @param entity 条件对象
      * @return 查询结果
      */
-    PageInfo<T> listForDataGrid(Page<T> grid, T entity);
+    PageInfo<T> listForDataGrid(PageData grid, Example entity);
 
     /**
      * 统计总量

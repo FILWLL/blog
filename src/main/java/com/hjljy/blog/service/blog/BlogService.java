@@ -9,4 +9,10 @@ import com.hjljy.blog.service.base.BaseService;
  * @Description:
  */
 public interface BlogService extends BaseService<Blog> {
+
+    /**
+     * 根据博客id增加浏览次数
+     * @param id
+     */
+    void setCountById(Integer id);
 }

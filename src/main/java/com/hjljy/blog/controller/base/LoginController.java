@@ -16,16 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * @Auther: HJLJY
  * @Date: 2018/12/4 0004 17:37
- * @Description:
+ * @Description:  处理登录界面的所有请求
  */
 @Controller
 public class LoginController extends BaseController {
-    private final AccountService service;
-
-    @Autowired
-    public LoginController(AccountService service) {
-        this.service = service;
-    }
 
     /** 跳转到登录界面*/
     @GetMapping("/login")
@@ -54,6 +48,6 @@ public class LoginController extends BaseController {
     @GetMapping("/loginOut")
     public String loginOut(){
         ShiroSessionUtil.getSubjct().logout();
-        return PATH_REDIRECT_LOGIN;
+        return PATH_LOGIN;
     }
 }

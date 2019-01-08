@@ -8,12 +8,15 @@ package com.hjljy.blog.controller.base;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.parser.Entity;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Auther: HJLJY
@@ -38,6 +41,8 @@ public class BaseController<T> {
     public static final String PATH_SYSTEM_INDEX="/system/index";
     /** 全局session用户*/
     public static final String USER_IN_SESSION="USER";
+
+    public static Map<String,Object> map = new HashMap<>();
 
     public Page<T> getPage(int size, int limit){
         Page<T> page = new Page<>();

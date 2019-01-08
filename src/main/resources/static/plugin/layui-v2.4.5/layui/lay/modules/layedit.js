@@ -3,7 +3,7 @@
  @Author：贤心
  @Modifier:KnifeZ
  @License：MIT
- @Version: V1.0.3.3 Beta
+ @Version: V1.0.3.5 Beta
  */
 "use strict";
 
@@ -305,7 +305,7 @@ function js_beautify(t, e, i, n) {
     return h.join("")
 }
 
-layui.define(["layer", "form"], function (t) {
+layui.define(["layer", "form", "code"], function (t) {
     var e = function (t) {
             var e = t.originalEvent.changedTouches[0];
             return document.elementFromPoint(e.clientX, e.clientY)
@@ -511,7 +511,7 @@ layui.define(["layer", "form"], function (t) {
             if ("a" === t && !r) return;
             r && (o.innerHTML = r);
             var c = m(i), u = c.parentNode;
-            "p" != t && "a" != t && "hr" != t && "div" != t && "P" != u.tagName && "<br>" != c.innerHTML ? s.appendChild(o) : s = o, "<br>" != c.innerHTML && "div" != t || (i.selectNode(c), i.deleteContents()), i.deleteContents(), i.insertNode(s), "img" == t && "<br>" == c.innerHTML && (l.execCommand("formatBlock", !1, "<p>"), l.execCommand("justifyCenter"), setTimeout(function () {
+            "pre" != t && "span" != t && "p" != t && "a" != t && "hr" != t && "div" != t && "P" != u.tagName && "<br>" != c.innerHTML ? s.appendChild(o) : s = o, "<br>" != c.innerHTML && "div" != t || (i.selectNode(c), i.deleteContents()), i.deleteContents(), i.insertNode(s), "img" == t && "<br>" == c.innerHTML && (l.execCommand("formatBlock", !1, "<p>"), l.execCommand("justifyCenter"), setTimeout(function () {
                 body.focus()
             }, 10))
         }
@@ -574,10 +574,15 @@ layui.define(["layer", "form"], function (t) {
                     })
                 })
             }, code: function (e) {
-                var i = l.codeConfig || {hide: !1};
-                C.call(s, {hide: i.hide, default: i.default}, function (i) {
-                    h.call(t, "pre", {text: i.code, "lay-lang": i.lang}, e), setTimeout(function () {
-                        s.focus()
+                var i = l.codeConfig || {hide: !1, encode: !0};
+                C.call(s, {hide: i.hide, default: i.default}, function (n) {
+                    n.code = n.code.replace(/&(?!#?[a-zA-Z0-9]+;)/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#39;").replace(/"/g, "&quot;"), h.call(t, "pre", {
+                        text: n.code,
+                        "lay-lang": n.lang,
+                        "lay-encode": i.encode,
+                        class: "layui-code"
+                    }, e), setTimeout(function () {
+                        layui.code(), s.focus()
                     }, 10)
                 })
             }, images: function (e) {
@@ -923,18 +928,22 @@ layui.define(["layer", "form"], function (t) {
                     }
                 })
             }, html: function (e) {
-                var n = this, l = n.parentElement.nextElementSibling.firstElementChild.contentDocument.body.innerHTML;
-                if (l = style_html(l, 4, " ", 80), -1 == n.parentElement.nextElementSibling.lastElementChild.id.indexOf("aceHtmleditor")) {
-                    n.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:" + n.parentElement.nextElementSibling.clientHeight + "px"), null !== this.parentElement.parentElement.getAttribute("style") && n.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:100%"), n.parentElement.nextElementSibling.firstElementChild.style = "position: absolute;left: -32768px;top: -32768px;";
+                var n = this;
+                if (-1 == n.parentElement.nextElementSibling.lastElementChild.id.indexOf("aceHtmleditor")) {
+                    var l = n.parentElement.nextElementSibling.firstElementChild.contentDocument.body.innerHTML;
+                    l.indexOf("</pre>") > -1 && (l = l.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'").replace(/&quot;/g, '"')), l = style_html(l, 4, " ", 80), n.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:" + n.parentElement.nextElementSibling.clientHeight + "px"), null !== this.parentElement.parentElement.getAttribute("style") && n.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:100%"), n.parentElement.nextElementSibling.firstElementChild.style = "position: absolute;left: -32768px;top: -32768px;";
                     var a = document.createElement("div");
                     a.setAttribute("id", n.parentElement.nextElementSibling.firstElementChild.id + "aceHtmleditor"), a.setAttribute("style", "left: 0px;top: 0px;width: 100%;height: 100%"), n.parentElement.nextElementSibling.appendChild(a);
                     var o = ace.edit(n.parentElement.nextElementSibling.firstElementChild.id + "aceHtmleditor");
                     o.setFontSize(14), o.session.setMode("ace/mode/html"), o.setTheme("ace/theme/tomorrow"), o.setValue(l), o.setOption("wrap", "free"), o.gotoLine(0), i(n).siblings("i").addClass("layui-disabled"), i(n).siblings(".layedit-tool-fullScreen").removeClass("layui-disabled"), i(n).removeClass("layui-disabled")
                 } else {
-                    var o = ace.edit(n.parentElement.nextElementSibling.firstElementChild.id + "aceHtmleditor");
-                    t.document.body.innerHTML = o.getValue();
-                    var s = n.parentElement.nextElementSibling.clientHeight;
-                    n.parentElement.nextElementSibling.removeAttribute("style"), this.parentElement.nextElementSibling.firstElementChild.style = "height:" + s + "px", this.parentElement.nextElementSibling.lastElementChild.remove(), i(n).siblings("i").removeClass("layui-disabled")
+                    var o = ace.edit(n.parentElement.nextElementSibling.firstElementChild.id + "aceHtmleditor"),
+                        s = o.getValue();
+                    t.document.body.innerHTML = s, t.document.body.childNodes.forEach(function (t, e, i) {
+                        "PRE" == t.tagName && (t.innerHTML = t.innerHTML.replace(/&(?!#?[a-zA-Z0-9]+;)/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#39;").replace(/"/g, "&quot;"))
+                    });
+                    var d = n.parentElement.nextElementSibling.clientHeight;
+                    n.parentElement.nextElementSibling.removeAttribute("style"), this.parentElement.nextElementSibling.firstElementChild.style = "height:" + d + "px", this.parentElement.nextElementSibling.lastElementChild.remove(), i(n).siblings("i").removeClass("layui-disabled")
                 }
             }, fullScreen: function (t) {
                 null == this.parentElement.parentElement.getAttribute("style") ? (this.parentElement.parentElement.setAttribute("style", "position: fixed;top: 0;left: 0;height: 100%;width: 100%;background-color: antiquewhite;z-index: 9999;"), this.parentElement.nextElementSibling.style = "height:100%", this.parentElement.nextElementSibling.firstElementChild.style = "height:100%", this.parentElement.nextElementSibling.lastElementChild.id.indexOf("aceHtmleditor") > -1 && (this.parentElement.nextElementSibling.firstElementChild.style = "position: absolute;left: -32768px;top: -32768px;", this.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:100%"))) : (this.parentElement.parentElement.removeAttribute("style"), this.parentElement.nextElementSibling.removeAttribute("style"), this.parentElement.nextElementSibling.firstElementChild.style = "height:" + l.height, this.parentElement.nextElementSibling.lastElementChild.id.indexOf("aceHtmleditor") > -1 && (this.parentElement.nextElementSibling.setAttribute("style", "z-index: 999; overflow: hidden;height:" + this.parentElement.nextElementSibling.firstElementChild.clientHeight + "px"), this.parentElement.nextElementSibling.firstElementChild.style = "position: absolute;left: -32768px;top: -32768px;"))
@@ -958,6 +967,10 @@ layui.define(["layer", "form"], function (t) {
                         n.full(e), n.setTop(t)
                     }
                 })
+            }, removeformat: function (t) {
+                a.execCommand("removeFormat", "strong", "color", "width"), setTimeout(function () {
+                    s.focus()
+                }, 10)
             }, fontFomatt: function (t) {
                 var e = l.fontFomatt || {
                     code: ["p", "h1", "h2", "h3", "h4", "div"],
@@ -1608,6 +1621,7 @@ layui.define(["layer", "form"], function (t) {
         table: '<i class="layui-icon layedit-tool-table" title="插入表格" layedit-event="table" style="font-size:18px">&#xe62d;</i>',
         attachment: '<i class="layui-icon layedit-tool-attachment" title="插入附件" layedit-event="attachment" style="font-size:18px">&#xe62f;</i>',
         preview: '<i class="layui-icon layedit-tool-preview" title="预览" layedit-event="preview" style="font-size:18px">&#xe615;</i>',
+        removeformat: '<i class="layui-icon layedit-tool-removeformat" title="清除文字样式" layedit-event="removeformat" style="font-size:18px">&#xe615;</i>',
         help: '<i class="layui-icon layedit-tool-help" title="帮助" layedit-event="help">&#xe607;</i>'
     }, N = new s;
     l.render(), t("layedit", N)

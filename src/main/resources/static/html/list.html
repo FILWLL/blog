@@ -52,7 +52,6 @@
     <div class="blogs">
 
     </div>
-
     <div class="sidebar">
         <div class="search">
             <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
@@ -110,7 +109,9 @@
             </ul>
         </div>
     </div>
+
 </article>
+
 <footer>
     <p>Design by <a href="www.hjljy.cn">海加尔金鹰个人博客</a> <a href="/">蜀ICP备18038277号</a></p>
 </footer>
@@ -155,11 +156,11 @@
                     for (var i = 0; i < results.length; i++) {
                         var d = results[i];
                         html += "<li>";
-                        html += "<h3 class='blogtitle'><a href='/" + d.url + "'>" + d.title + "</a></h3>";
+                        html += "<h3 class='blogtitle'><a href='#' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
                         html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
                         html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
                         html += "<span class='dtime'>" + d.createTime + "</span>";
-                        html += "<span class='readmore'><a href='/" + d.url + "' >" + "阅读原文" + "</a></span>"
+                        html += "<span class='readmore'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\" >" + "阅读全文" + "</a></span>";
                         html += "</div></li>";
                     }
                     html += "<div id='blogpage' style='float:right'></div>";

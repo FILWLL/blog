@@ -1,6 +1,7 @@
 package com.hjljy.blog.service.blog;
 
 import com.hjljy.blog.entity.blog.Blog;
+import com.hjljy.blog.mapper.blog.BlogMapper;
 import com.hjljy.blog.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +12,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BlogServiceImpl extends BaseServiceImpl<Blog> implements BlogService  {
+
+    private final BlogMapper blogMapper;
+
+    public BlogServiceImpl(BlogMapper blogMapper) {
+        this.blogMapper = blogMapper;
+    }
+
+    @Override
+    public void setCountById(Integer id) {
+        blogMapper.setCountById(id);
+    }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * @Auther: HJLJY
  * @Date: 2018/12/27 0027 10:32
- * @Description: 文件上传
+ * @Description: 文件上传处理
  */
 @RestController
 @RequestMapping("/upload")

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:include="common :: header">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -14,9 +15,15 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">文章标题</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-block" style="width: 1100px">
             <input type="text" name="title" lay-verify="required" placeholder="请输入文章标题" autocomplete="off"
                    class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">文章摘要</label>
+        <div class="layui-input-block" style="width: 1100px">
+            <textarea name="abs" placeholder="请输入文章摘要" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
@@ -25,17 +32,19 @@
             <textarea name="content" placeholder="请输入内容" id="layeditDemo"></textarea>
         </div>
     </div>
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">文章摘要</label>
-        <div class="layui-input-inline">
-            <textarea name="abs" placeholder="请输入文章摘要" ></textarea>
-        </div>
-    </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">文章标签</label>
         <div class="layui-input-inline">
             <input type="text" name="tags" lay-verify="required" placeholder="请输入标签" autocomplete="off"
                    class="layui-input">
+        </div>
+        <label class="layui-form-label">是否公开</label>
+        <div class="layui-input-inline">
+            <select name="status" lay-verify="required">
+                <option value="0">不公开</option>
+                <option value="1">公开</option>
+            </select>
         </div>
         <label class="layui-form-label">文章类型</label>
         <div class="layui-input-inline">
@@ -46,195 +55,277 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">是否公开</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="否|是" checked>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">发布文章</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
 
+<!--搜索表单-->
+<form class="layui-form layui-form-pane" method="POST" id="searchForm" onsubmit="return false;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">文章标题</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
+        </div>
+        <label class="layui-form-label">文章标签</label>
+        <div class="layui-input-inline">
+            <input type="text" name="tags" placeholder="请输入文章标签" autocomplete="off" class="layui-input">
+        </div>
+        <label class="layui-form-label">文章类型</label>
+        <div class="layui-input-inline">
+            <select name="type" lay-verify="required">
+                <option value="原创">原创</option>
+                <option value="转载">转载</option>
+            </select>
+        </div>
+        <div class="layui-input-inline">
+            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="formSearch"><i
+                    class="layui-icon layui-icon-search"></i></button>
+        </div>
+    </div>
+</form>
 
 <table class="layui-hide" lay-filter="test" id="demo"></table>
 
-
-
 <div th:include="common :: footer"></div>
-
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn   layui-btn-radius" lay-event="add">
+        <button shiro:hasPermission="sys:blog:add" class="layui-btn   layui-btn-radius" lay-event="add">
             <i class="layui-icon">&#xe608;</i> 添加
         </button>
-        <button class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="delBatch">
+        <button shiro:hasPermission="sys:blog:del"  class="layui-btn   layui-btn-radius layui-btn-danger" lay-event="delBatch">
             <i class="layui-icon">&#xe640;</i>批量删除
         </button>
     </div>
 </script>
-<script src="/js/ace/ace.js">
+<script type="text/html" id="barDemo">
+    <a shiro:hasPermission="sys:blog:add" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a shiro:hasPermission="sys:blog:del" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 
+<script src="/js/ace/ace.js">
 </script>
 <script>
     layui.use(['table', 'form', 'layer', 'layedit'], function () {
-            var table = layui.table,
-                layedit = layui.layedit,
-                layer = layui.layer,
-                $ = layui.$,
-                form = layui.form,
-                index = null;
-            tableInit();
-            function tableInit() {
-                table.render({
-                    elem: '#demo'
-                    , url: '/blog/getBlogByPage' //数据接口
-                    , toolbar: '#toolbarDemo' //添加头部工具栏
-                    , title: '博客信息表'
-                    , cols: [
-                        [ //表头
-                            {type: 'checkbox'}
-                            , {field: 'id', title: 'ID', sort: true, width: 40, hide: true}
-                            , {field: 'title', title: '标题', width: 120}
-                            , {field: 'content', title: '内容', width: 120}
-                            , {field: 'url', title: '路径'}
-                            , {field: 'tags', title: '标签', width: 180}
-                            , {field: 'createTime', title: '创建时间', width: 130}
-                            , {field: 'author', title: '作者'}
-                            , {field: 'count', title: '统计', width: 80}
-                            , {field: 'status', title: '状态', width: 110}
-                            , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
-                        ]
-                    ]
-                    , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                        //,curr: 5 //设定初始在第 5 页
-                        , groups: 4 //只显示 4 个连续页码
-                        , first: false //不显示首页
-                        , last: false //不显示尾页
-                    }
-                })
-            }
-
-
-            table.on('toolbar(test)', function (obj) {
-                var checkStatus = table.checkStatus(obj.config.id);
-                switch (obj.event) {
-                    case 'add':
-                        addOrEdit();
-                        break;
-                    case 'delBatch':
-                        layer.confirm('确认删除么？', {anim: 6, offset: '100px'}, function (index) {
-                            var data = checkStatus.data;
-                            var ids = [];
-                            for (var i = 0; i < data.length; i++) {
-                                ids.push(data[i].id);
-                            }
-                            delBatch(ids.toString());
-                            layer.close(index);
-                        });
-
-                        break;
-                }
-                ;
-            });
-
-
-            form.on('submit(formDemo)', function (data) {
-                var x = layedit.getContent(index);
-                console.log(x);
-                data.field.content=x;
-                console.log(data.field);
-                $.ajax({
-                    url: "/blog/add"
-                    , data: data.field
-                    , async: false
-                    , type: "post"
-                    , dataType: "json"
-                    , success: function (data) {
-                        document.getElementById("testlayer").reset();
-                        $("#testlayer").addClass("layui-hide");
-                        tableInit();
-                        layer.closeAll('page');
-                        if (data.success) {
-                            layer.msg(data.msg);
-                        } else {
-                            layer.msg(data.msg);
-                        }
-                    }
-                });
-            });
-
-            function textareaInit() {
-                layedit.set({
-                    //暴露layupload参数设置接口 --详细查看layupload参数说明
-                    uploadImage: {
-                        url: '/upload/upload1',
-                        accept: 'image',
-                        acceptMime: 'image/*',
-                        exts: 'jpg|png|gif|bmp|jpeg',
-                        size: '10240'
-                    }
-                    , uploadVideo: {
-                        url: '/Attachment/LayUploadFile',
-                        accept: 'video',
-                        acceptMime: 'video/*',
-                        exts: 'mp4|flv|avi|rm|rmvb',
-                        size: '20480'
-                    }
-                    //右键删除图片/视频时的回调参数，post到后台删除服务器文件等操作，
-                    //传递参数：
-                    //图片： imgpath --图片路径
-                    //视频： filepath --视频路径 imgpath --封面路径
-                    , calldel: {
-                        url: '/Attachment/DeleteFile'
-                    }
-                    //开发者模式 --默认为false
-                    , devmode: true
-                    //插入代码设置
-                    , codeConfig: {
-                        hide: true,  //是否显示编码语言选择框
-                        default: 'java', //hide为true时的默认语言格式
-                        encode:true
-                    }
-                    , tool: [
-                        'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'removeFormat','fontFomatt','fontfamily','fontSize', 'colorpicker', 'face'
-                        , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt', 'video', 'anchors'
-                        , '|', 'table', 'fullScreen'
-                    ]
-                    , height: '90%'
-                });
-                index = layedit.build('layeditDemo', {
-                    height: 400
-                });
-
-            }
-
-            /*添加和编辑弹出框*/
-            function addOrEdit(data) {
-                $("#testlayer").removeClass("layui-hide");
-                //打开编辑框
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-molv',
-                    title: '用户信息',
+        var table = layui.table,
+            layedit = layui.layedit,
+            layer = layui.layer,
+            $ = layui.$,
+            form = layui.form,
+            index = null;
+        getDataByPage();
+        //监听单元格点击事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'getView') {
+                var index = layer.open({
+                    type: 2,
+                    title: "点击右侧关闭按钮进行关闭",
+                    closeBtn: 1,
                     shadeClose: true,
-                    shade: 0.3,
-                    offset: 't',
-                    area: ['1260px', '780px'],
-                    content: $("#testlayer"),
-                    cancel: function () {
-                        document.getElementById("testlayer").reset();
-                        $("#testlayer").addClass("layui-hide");
-                    }
+                    shade: 0.8,
+                    area: ['auto', '90%'],
+                    content: data.url //iframe的url
                 });
-                textareaInit();
-            };
+                layer.full(index);
+            }
+            if (obj.event === 'edit'){
+                openAddForm(data);
+            }
+            if (obj.event === 'del'){
+                layer.confirm('确认删除么？', {anim: 6, offset: '100px'}, function (index) {
+                    alert(data.id.toString())
+                    delBatch(data.id.toString());
+                    layer.close(index);
+                });
+            }
+        });
+
+        //监听表格头部工具栏时间
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'add':
+                    openAddForm();
+                    break;
+                case 'delBatch':
+                    layer.confirm('确认删除么？', {anim: 6, offset: '100px'}, function (index) {
+                        var data = checkStatus.data;
+                        var ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i].id);
+                        }
+                        delBatch(ids.toString());
+                        layer.close(index);
+                    });
+                    break;
+            }
+            ;
+        });
+
+        //监听编辑框提交事件
+        form.on('submit(formDemo)', function (data) {
+            var x = layedit.getContent(index);
+            data.field.content = x;
+            $.ajax({
+                url: "/blog/add"
+                , data: data.field
+                , async: false
+                , type: "post"
+                , dataType: "json"
+                , success: function (data) {
+                    document.getElementById("testlayer").reset();
+                    $("#testlayer").addClass("layui-hide");
+                    layer.closeAll('page');
+                    if (data.success) {
+                        layer.msg(data.msg, {icon: 1});
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+            tableInit();
+        });
+        //监听搜索框提交事件
+        form.on('submit(formSearch)', function (data) {
+            getDataByPage();
+        });
+        /**初始化表格*/
+        function tableInit(data) {
+            table.render({
+                elem: '#demo'
+                , data:data.data
+                , toolbar: '#toolbarDemo' //添加头部工具栏
+                , title: '博客信息表'
+                , cols: [
+                    [ //表头
+                        {type: 'checkbox'}
+                        , {field: 'id', title: 'ID', sort: true, width: 40, hide: true}
+                        , {field: 'title', title: '标题', align: 'center'}
+                        , {field: 'url', title: '路径', align: 'center', event: 'getView', style: 'cursor: pointer;'}
+                        , {field: 'tags', title: '标签', align: 'center', width: 170}
+                        , {field: 'createTime', title: '创建时间', align: 'center', width: 170}
+                        , {field: 'author', title: '作者', align: 'center', width: 120}
+                        , {field: 'count', title: '统计', width: 80, align: 'center'}
+                        , {field: 'status', title: '状态', width: 80, align: 'center'}
+                        , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 160, align: 'center'}
+                    ]
+                ]
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 4 //只显示 4 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+                }
+            })
         }
-    );
+        /**初始化富文本框*/
+        function textareaInit() {
+            layedit.set({
+                //暴露layupload参数设置接口 --详细查看layupload参数说明
+                uploadImage: {
+                    url: '/upload/upload1',
+                    accept: 'image',
+                    acceptMime: 'image/*',
+                    exts: 'jpg|png|gif|bmp|jpeg',
+                    size: '10240'
+                }
+                , uploadVideo: {
+                    url: '/Attachment/LayUploadFile',
+                    accept: 'video',
+                    acceptMime: 'video/*',
+                    exts: 'mp4|flv|avi|rm|rmvb',
+                    size: '20480'
+                }
+                //右键删除图片/视频时的回调参数，post到后台删除服务器文件等操作，
+                //传递参数：
+                //图片： imgpath --图片路径
+                //视频： filepath --视频路径 imgpath --封面路径
+                , calldel: {
+                    url: '/Attachment/DeleteFile'
+                }
+                //开发者模式 --默认为false
+                , devmode: true
+                //插入代码设置
+                , codeConfig: {
+                    hide: true,  //是否显示编码语言选择框
+                    default: 'java', //hide为true时的默认语言格式
+                    encode: true
+                }
+                , tool: [
+                    'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'removeFormat', 'fontFomatt', 'fontfamily', 'fontSize', 'colorpicker', 'face'
+                    , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt', 'video', 'anchors'
+                    , '|', 'table', 'fullScreen'
+                ]
+                , height: '90%'
+            });
+            index = layedit.build('layeditDemo', {
+                height: 420
+            });
+        }
+        /**添加和编辑弹出框*/
+        function openAddForm(data) {
+            if (data!=null){
+                $("#testlayer").find("input[name='id']").val(data.id);
+                $("#testlayer").find("input[name='tags']").val(data.tags);
+                $("#testlayer").find("input[name='title']").val(data.title);
+                $("#testlayer").find("textarea[name='content']").val(data.content);
+                $("#testlayer").find("select[name='status']").val(data.status);
+                $("#testlayer").find("select[name='type']").val(data.type);
+                $("#testlayer").find("textarea[name='abs']").val(data.abs);
+            }
+            $("#testlayer").removeClass("layui-hide");
+            //打开编辑框
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-molv',
+                title: '用户信息',
+                shade: 0.3,
+                offset: 't',
+                area: ['auto', '800px'],
+                content: $("#testlayer"),
+                cancel: function () {
+                    document.getElementById("testlayer").reset();
+                    $("#testlayer").addClass("layui-hide");
+                }
+            });
+            textareaInit()
+        };
+        /**根据id进行删除*/
+        function delBatch(ids) {
+            $.ajax({
+                url: "/blog/del/"
+                , async: false
+                , type: "post"
+                , data: {"ids": ids}
+                , dataType: "json"
+                , success: function (data) {
+                    if (data.success) {
+                        layer.msg(data.msg, {icon: 1});
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+            tableInit();
+        }
+        /**分页条件查询*/
+        function getDataByPage() {
+            $.ajax({
+                url: "/blog/getBlogByPage"
+                , data: $("#searchForm").serialize()
+                , async: false
+                , type: "get"
+                , dataType: "json"
+                , success: function (data) {
+                    tableInit(data);
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>

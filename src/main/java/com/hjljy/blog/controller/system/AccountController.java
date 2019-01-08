@@ -45,6 +45,7 @@ public class AccountController extends BaseController{
     public String index(){
         return Path+"index";
     }
+
     @BlogLog(description = "查询用户信息")
     @RequiresPermissions("sys:account:index")
     @RequestMapping("/getAccountByPage")

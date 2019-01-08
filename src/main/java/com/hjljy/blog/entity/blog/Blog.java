@@ -26,6 +26,7 @@ public class Blog {
     /**
      * 创建时间
      */
+    @OrderBy(value = "DESC")
     @Column(name = "create_time")
     private Date createTime;
 

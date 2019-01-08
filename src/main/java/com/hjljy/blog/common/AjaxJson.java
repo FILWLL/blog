@@ -90,7 +90,7 @@ public class AjaxJson implements Serializable {
     }
 
     /**
-     * 设置成功返回的数据
+     * 设置成功返回的信息
      * @param msg
      */
     public void setSuccessMsg(String msg){

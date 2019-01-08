@@ -1,28 +1,34 @@
 package com.hjljy.blog;
 
-import com.hjljy.blog.service.system.account.AccountService;
+import com.hjljy.blog.entity.blog.Blog;
+import com.hjljy.blog.mapper.blog.BlogMapper;
+import com.hjljy.blog.service.blog.BlogService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import tk.mybatis.mapper.entity.Example;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BlogApplicationTests {
 
 	@Autowired
-	AccountService service;
+	BlogService service;
+
+	@Autowired
+	BlogMapper mapper;
 	@Test
 	public void contextLoads() {
-		//构造模板引擎
-
+		Example example = new Example(Blog.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.orLike("tags", "%spring%");
+		example.and(criteria);
+		List<Blog> blogs = mapper.selectByExample(example);
+		System.out.println(1);
 	}
 
 }

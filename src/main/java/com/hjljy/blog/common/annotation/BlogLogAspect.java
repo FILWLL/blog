@@ -1,5 +1,6 @@
 package com.hjljy.blog.common.annotation;
 
+import com.hjljy.blog.common.utils.IPUtil;
 import com.hjljy.blog.common.utils.ShiroSessionUtil;
 import com.hjljy.blog.entity.system.Log;
 import com.hjljy.blog.service.system.log.LogService;
@@ -73,7 +74,7 @@ public class BlogLogAspect {
         String methodName = signature.getName();
         sysLog.setOperationMethod(className + "." + methodName + "()");
         // 设置操作的IP地址
-        sysLog.setOperationIp(request.getRemoteAddr());
+        sysLog.setOperationIp(IPUtil.getIpAddr(request));
         // 设置用户信息
         sysLog.setUserId(ShiroSessionUtil.getAccount().getId());
         sysLog.setUserName(ShiroSessionUtil.getAccountName());

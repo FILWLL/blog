@@ -142,10 +142,7 @@ layui.use(['table', 'form', 'layer'], function () {
         })
     }
 
-    /**
-     * 添加及修改操作
-     * @param data
-     */
+    /**添加及修改操作*/
     function addOrEdit(data) {
         $.ajax({
             url: "/system/account/addOrEdit"
@@ -190,8 +187,6 @@ layui.use(['table', 'form', 'layer'], function () {
             document.getElementById("pw").setAttribute("lay-verify", "required");
         } else {
             $("#testlayer #pwd").addClass("layui-hide");
-            console.log("afafa:" + data.status)
-            console.log(data)
             document.getElementById("pw").setAttribute("lay-verify", "");
             $("#testlayer").find("input[name='id']").val(data.id);
             $("#testlayer").find("input[name='username']").val(data.username);
@@ -222,10 +217,7 @@ layui.use(['table', 'form', 'layer'], function () {
         });
     };
 
-    /**
-     * 批量删除
-     * @param ids
-     */
+    /**批量删除*/
     function delBatch(ids) {
         $.ajax({
             url: "/system/account/delBatch/"
@@ -243,8 +235,6 @@ layui.use(['table', 'form', 'layer'], function () {
         });
         tableInit();
     }
-
-
 });
 
 

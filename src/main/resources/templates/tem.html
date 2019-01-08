@@ -10,7 +10,6 @@
     <link href="../css/base.css" rel="stylesheet">
     <link href="../css/index.css" rel="stylesheet">
     <link href="../css/m.css" rel="stylesheet">
-    <link href="../plugin/layui-v2.4.5/layui/css/layui.css" rel="stylesheet">
     <script src="../js/modernizr.js"></script>
     <script>
         window.onload = function () {
@@ -27,7 +26,7 @@
 <body>
 <header>
     <div class="tophead">
-        <div class="logo"><a href="/">海加尔金鹰个人博客</a></div>
+        <div class="logo"><a href="/">海加尔金鹰的个人博客</a></div>
         <div id="mnav">
             <h2><span class="navicon"></span></h2>
             <ul>
@@ -49,7 +48,8 @@
     <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span>
         <a href="/" class="n1">网站首页</a><a href="/html/list.html" class="n2">学无止境</a>
     </h1>
-    <div class="blogs">
+    <div class="blogs" style="width: 100%">
+        <br>
         <div th:utext="${content}" class="news_infos">
         </div>
     </div>
@@ -70,9 +70,9 @@
             <h2 class="hometitle">栏目导航</h2>
             <ul class="navbor">
 
-                <li><a href="/html/list.html">学无止境</a>
+                <li><a href="list.html">学无止境</a>
                     <ul>
-                        <li><a href="/html/list.html">学习笔记</a></li>
+                        <li><a href="list.html">学习笔记</a></li>
                         <li><a href="#">Springboot</a></li>
                         <li><a href="#">CSS3|HTML5</a></li>
                         <li><a href="#">JAVA|JDBC</a></li>

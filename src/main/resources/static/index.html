@@ -94,6 +94,7 @@
             <ul>
                 <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
                 <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
+                <li><a href="https://gitee.com/hjljy" title="我的码云">我的码云</a></li>
             </ul>
         </div>
     </div>
@@ -107,6 +108,7 @@
 <script>
     $(function () {
         getBlogByCreateTime();
+
     })
 
     function getBlogByCreateTime() {
@@ -125,17 +127,28 @@
                 for (var i = 0; i < results.length; i++) {
                     var d = results[i];
                     html += "<li>";
-                    html += "<h3 class='blogtitle'><a href='/" + d.url + "'>" + d.title + "</a></h3>";
+                    html += "<h3 class='blogtitle'><a href='#' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
                     html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
                     html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
                     html += "<span class='dtime'>" + d.createTime + "</span>";
-                    html += "<span class='readmore'><a href='/" + d.url + "' >" + "阅读原文" + "</a></span>"
+                    html += "<span class='readmore'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\" >" + "阅读全文" + "</a></span>";
                     html += "</div></li>";
                 }
                 $(".blogs").append(html);
             }
         });
     }
+
+    function getCount(url,id) {
+        window.location.href=url;
+        $.ajax({
+            url: "/setCount"
+            , async: false
+            , type: "post"
+            , data: {id: id}
+        })
+    }
+
 </script>
 </body>
 </html>

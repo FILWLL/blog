@@ -4,7 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hjljy.blog.common.AjaxJson;
 import com.hjljy.blog.common.Const;
+import com.hjljy.blog.common.PageData;
 import com.hjljy.blog.controller.base.BaseController;
+import com.hjljy.blog.entity.blog.Blog;
 import com.hjljy.blog.entity.system.Account;
 import com.hjljy.blog.entity.system.Role;
 import com.hjljy.blog.entity.system.RoleRes;
@@ -39,10 +41,9 @@ public class RoleController extends BaseController {
 
     @RequestMapping("/getRoleByPage")
     @ResponseBody
-    public AjaxJson getRoleByPage(int page,int limit){
+    public AjaxJson getRoleByPage(PageData pageData, Role blog){
         AjaxJson ajaxJson = new AjaxJson();
-        Page<Role> page1 = getPage(page,limit );
-        PageInfo<Role> pageInfo = service.listForDataGrid(page1);
+        PageInfo<Role> pageInfo = service.listForDataGrid(pageData);
         ajaxJson.setPageSuccessData(pageInfo.getList(), pageInfo.getTotal());
         return ajaxJson;
     }
