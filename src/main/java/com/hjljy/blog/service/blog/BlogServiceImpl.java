@@ -5,6 +5,8 @@ import com.hjljy.blog.mapper.blog.BlogMapper;
 import com.hjljy.blog.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Auther: HJLJY
  * @Date: 2018/12/27 0027 18:40
@@ -22,5 +24,15 @@ public class BlogServiceImpl extends BaseServiceImpl<Blog> implements BlogServic
     @Override
     public void setCountById(Integer id) {
         blogMapper.setCountById(id);
+    }
+
+    @Override
+    public List<String> getBlogTags() {
+        return blogMapper.getBlogTags();
+    }
+
+    @Override
+    public List<Blog> getTopBlog() {
+        return blogMapper.getTopBlog();
     }
 }

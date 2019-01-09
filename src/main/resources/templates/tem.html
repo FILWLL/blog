@@ -48,12 +48,20 @@
     <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span>
         <a href="/" class="n1">网站首页</a><a href="/html/list.html" class="n2">学无止境</a>
     </h1>
-    <div class="blogs" style="width: 100%">
+    <div class="blogs">
         <br>
         <div th:utext="${content}" class="news_infos">
         </div>
     </div>
     <div class="sidebar">
+
+        <div class="about">
+            <div class="avatar"><img src="images/avatar.jpg" alt=""></div>
+            <p class="abname">海加尔金鹰</p>
+            <p class="abposition">JAVA开发</p>
+            <div class="abtext"> 一个90后的，爱玩游戏的，爱生活的，发际线慢慢上升的的后端开发人员</div>
+        </div>
+
         <div class="search">
             <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
                 <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
@@ -66,48 +74,19 @@
                 <input name="Submit" class="input_submit" value="搜索" type="submit">
             </form>
         </div>
-        <div class="lmnav">
-            <h2 class="hometitle">栏目导航</h2>
-            <ul class="navbor">
+        <div class="paihang" id="zhiding">
+            <h2 class="hometitle">置顶文章</h2>
 
-                <li><a href="list.html">学无止境</a>
-                    <ul>
-                        <li><a href="list.html">学习笔记</a></li>
-                        <li><a href="#">Springboot</a></li>
-                        <li><a href="#">CSS3|HTML5</a></li>
-                        <li><a href="#">JAVA|JDBC</a></li>
-                        <li><a href="#">Linux|Tomcat</a></li>
-                        <li><a href="#">Hive|Spark</a></li>
-                    </ul>
-                </li>
-                <li><a href="about.html">关于我</a></li>
-            </ul>
-        </div>
+        </div
         <div class="cloud">
             <h2 class="hometitle">标签云</h2>
-            <ul>
-                <a href="/">springboot</a> <a href="/">mybatis</a> <a href="/">html5</a>
-                <a href="/">JAVA</a> <a href="/">数据库</a> <a href="/">linux</a> <a href="/">JavaScript</a><a href="/">spring</a>
-                <a href="/">学习笔记</a>
+            <ul id="cloud" >
             </ul>
         </div>
-        <div class="paihang">
-            <h2 class="hometitle">学习笔记</h2>
-            <!--  <ul>
-                <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
-                  <p><i><img src="../images/t02.jpg"></i>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
-                </li>
-                <li><b><a href="#" target="_blank">【匆匆那些年】总结个人博客经历的这四年…30...</a></b>
-                  <p><i><img src="../images/mb02.jpg"></i>博客从最初的域名购买，到上线已经有四年的时间了，这四年的时间，有笑过，有怨过，有悔过，有执着过，也...</p>
-                </li>
-              </ul>-->
-        </div>
+>
         <div class="links">
             <h2 class="hometitle">友情链接</h2>
-            <ul>
-                <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
-                <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
-            </ul>
+
         </div>
     </div>
 </article>
@@ -115,5 +94,15 @@
     <p>Design by <a href="www.hjljy.cn">海加尔金鹰个人博客</a> <a href="/">蜀ICP备18038277号</a></p>
 </footer>
 <script src="../js/nav.js"></script>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/blog.js"></script>
+<script>
+    $(function () {
+        getBlogTags();
+        getTop();
+        getFriends();
+    })
+
+</script>
 </body>
 </html>

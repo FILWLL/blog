@@ -46,67 +46,38 @@
     </div>
 </header>
 <article>
-    <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span><a href="/" class="n1">网站首页</a><a href="list.html"
-                                                                                                   class="n2">学无止境</a>
+    <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span>
+        <a href="/" class="n1">网站首页</a><a href="list.html" class="n2">学无止境</a>
     </h1>
     <div class="blogs">
-
     </div>
     <div class="sidebar">
+        <div class="about">
+            <div class="avatar"><img src="../images/avatar.jpg" alt=""></div>
+            <p class="abname">海加尔金鹰</p>
+            <p class="abposition">JAVA开发</p>
+            <div class="abtext"> 一个90后的，爱玩游戏的，爱生活的，发际线慢慢上升的的后端开发人员</div>
+        </div>
         <div class="search">
-            <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
-                <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+            <form onsubmit="return false;" method="get" name="searchform" id="searchform">
+                <input name="title" id="keyboard" class="input_text"
                        style="color: rgb(153, 153, 153);"
-                       onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
-                       onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
-                <input name="show" value="title" type="hidden">
-                <input name="tempid" value="1" type="hidden">
-                <input name="tbname" value="news" type="hidden">
-                <input name="Submit" class="input_submit" value="搜索" type="submit">
+                       onfocus="if(value=='请输入文章名称'){this.style.color='#000';value=''}"
+                       onblur="if(value==''){this.style.color='#999';value='请输入文章名称'}" type="text">
+                <input class="input_submit" value="搜索" type="submit" onclick="getBlogByCreateTime()">
             </form>
         </div>
-        <div class="lmnav">
-            <h2 class="hometitle">栏目导航</h2>
-            <ul class="navbor">
-
-                <li><a href="list.html">学无止境</a>
-                    <ul>
-                        <li><a href="list.html">学习笔记</a></li>
-                        <li><a href="#">Springboot</a></li>
-                        <li><a href="#">CSS3|HTML5</a></li>
-                        <li><a href="#">JAVA|JDBC</a></li>
-                        <li><a href="#">Linux|Tomcat</a></li>
-                        <li><a href="#">Hive|Spark</a></li>
-                    </ul>
-                </li>
-                <li><a href="about.html">关于我</a></li>
-            </ul>
+        <div class="paihang" id="zhiding">
+            <h2 class="hometitle">置顶文章</h2>
         </div>
         <div class="cloud">
             <h2 class="hometitle">标签云</h2>
-            <ul>
-                <a href="/">springboot</a> <a href="/">mybatis</a> <a href="/">html5</a>
-                <a href="/">JAVA</a> <a href="/">数据库</a> <a href="/">linux</a> <a href="/">JavaScript</a><a href="/">spring</a>
-                <a href="/">学习笔记</a>
+            <ul id="cloud" >
             </ul>
-        </div>
-        <div class="paihang">
-            <h2 class="hometitle">学习笔记</h2>
-            <!--  <ul>
-                <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
-                  <p><i><img src="../images/t02.jpg"></i>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
-                </li>
-                <li><b><a href="#" target="_blank">【匆匆那些年】总结个人博客经历的这四年…30...</a></b>
-                  <p><i><img src="../images/mb02.jpg"></i>博客从最初的域名购买，到上线已经有四年的时间了，这四年的时间，有笑过，有怨过，有悔过，有执着过，也...</p>
-                </li>
-              </ul>-->
         </div>
         <div class="links">
             <h2 class="hometitle">友情链接</h2>
-            <ul>
-                <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
-                <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
-            </ul>
+
         </div>
     </div>
 
@@ -118,57 +89,71 @@
 <script src="../js/nav.js"></script>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../plugin/layui-v2.4.5/layui/layui.js"></script>
+<script src="..js/blog.js"></script>
 <script>
+    var laypage = null;
+    var count = 0;
     layui.use('laypage', function () {
-        var laypage = layui.laypage;
-        var x = null;
+        laypage = layui.laypage;
         getBlogByCreateTime();
+        getBlogTags()
+        getTop();
+        getFriends();
         //执行一个laypage实例
+        pageInit();
+
+    });
+    /**根据条件查询数据*/
+    function getBlogByCreateTime(target,page, limit) {
+        var title = $("#keyboard").val();
+        $.ajax({
+            url: "/blog/getBlogByPage"
+            , async: false
+            , type: "get"
+            , data: {"page": page, "limit": limit,"tags": $(target).text(),"title": title}
+            , dataType: "json"
+            , success: function (data) {
+                var results = data.data;
+                console.log(results)
+                count = data.count;
+                $(".blogs").children().remove();
+                var html = "";
+                for (var i = 0; i < results.length; i++) {
+                    var d = results[i];
+                    html += "<li>";
+                    html += "<h3 class='blogtitle'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
+                    html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
+                    html += " <div class='autor'><span class='lm'><a href='javascript:;' target='_blank' class='classname' onclick='getBlogByCreateTime(this)'>" + d.tags + "</a></span>";
+                    html += "<span class='dtime'>" + d.createTime + "</span>";
+                    html += "<span class='readmore'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\" >" + "阅读全文" + "</a></span>";
+                    html += "</div></li>";
+                }
+                if (results.length == 0) {
+                    html += "<li>";
+                    html += "无任何数据";
+                    html += "</li>";
+                }
+                html += "<div id='blogpage' style='float:right'></div>";
+                $(".blogs").append(html);
+            }
+        });
+        pageInit();
+    }
+    /**初始化分页工具*/
+    function pageInit() {
         laypage.render({
             elem: 'blogpage' //注意，这里的 test1 是 ID，不用加 # 号
-            , count: x //数据总数，从服务端得到
+            , count: count //数据总数，从服务端得到
             , limit: 10
             , layout: ['prev', 'page', 'next']
             , jump: function (obj, first) {
-                //obj包含了当前分页的所有参数，比如：
-                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                console.log(obj.limit); //得到每页显示的条数
-
                 //首次不执行
                 if (!first) {
-                    getBlogByCreateTime(obj.curr, obj.limit);
+                    getBlogByCreateTime(null,obj.curr, obj.limit);
                 }
             }
         });
-
-        function getBlogByCreateTime(page, limit) {
-            $.ajax({
-                url: "/blog/getBlogByPage"
-                , async: false
-                , type: "get"
-                , data: {"page": page, "limit": limit}
-                , dataType: "json"
-                , success: function (data) {
-                    var results = data.data;
-                    x = results.count;
-                    $(".blogs").children().remove();
-                    var html = "";
-                    for (var i = 0; i < results.length; i++) {
-                        var d = results[i];
-                        html += "<li>";
-                        html += "<h3 class='blogtitle'><a href='#' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
-                        html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
-                        html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
-                        html += "<span class='dtime'>" + d.createTime + "</span>";
-                        html += "<span class='readmore'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\" >" + "阅读全文" + "</a></span>";
-                        html += "</div></li>";
-                    }
-                    html += "<div id='blogpage' style='float:right'></div>";
-                    $(".blogs").append(html);
-                }
-            });
-        }
-    });
+    }
 </script>
 </body>
 </html>

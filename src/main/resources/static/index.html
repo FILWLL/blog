@@ -81,21 +81,16 @@
                 <input class="input_submit" value="搜索" type="submit" onclick="getBlogByCreateTime()">
             </form>
         </div>
+        <div class="paihang" id="zhiding">
+            <h2 class="hometitle">置顶文章</h2>
+        </div>
         <div class="cloud">
             <h2 class="hometitle">标签云</h2>
-            <ul>
-                <a href="/">springboot</a> <a href="/">mybatis</a> <a href="/">html5</a>
-                <a href="/">JAVA</a> <a href="/">数据库</a> <a href="/">linux</a> <a href="/">JavaScript</a><a href="/">spring</a>
-                <a href="/">学习日记</a>
+            <ul id="cloud">
             </ul>
         </div>
         <div class="links">
             <h2 class="hometitle">友情链接</h2>
-            <ul>
-                <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
-                <li><a href="https://github.com/FILWLL/" title="我的github">我的github</a></li>
-                <li><a href="https://gitee.com/hjljy" title="我的码云">我的码云</a></li>
-            </ul>
         </div>
     </div>
 </article>
@@ -105,19 +100,22 @@
 </footer>
 <script src="js/nav.js"></script>
 <script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/blog.js"></script>
 <script>
     $(function () {
         getBlogByCreateTime();
-
+        getBlogTags();
+        getTop();
+        getFriends();
     })
-
-    function getBlogByCreateTime() {
+    /**根据创建时间获取最新的十篇文章*/
+    function getBlogByCreateTime(target) {
         var title = $("#keyboard").val();
         $.ajax({
             url: "/blog/getBlogByPage"
             , async: false
             , type: "get"
-            , data: {"title": title}
+            , data: {"title": title, "tags": $(target).text()}
             , dataType: "json"
             , success: function (data) {
                 var results = data.data;
@@ -126,27 +124,27 @@
                 var html = "";
                 for (var i = 0; i < results.length; i++) {
                     var d = results[i];
+                    var x = d.tags.split(",");
                     html += "<li>";
                     html += "<h3 class='blogtitle'><a href='#' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
                     html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
-                    html += " <div class='autor'><span class='lm'><a href='/' target='_blank' class='classname'>" + d.tags + "</a></span>";
+                    html += " <div class='autor'>";
+                    for (var j = 0;j<x.length;j++){
+                        html += "<span class='lm'><a href='javascript:;' target='_blank' class='classname' onclick='getBlogByCreateTime(this)'>" + x[j] + "</a></span>";
+                    }
+
                     html += "<span class='dtime'>" + d.createTime + "</span>";
                     html += "<span class='readmore'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\" >" + "阅读全文" + "</a></span>";
                     html += "</div></li>";
                 }
+                if (results.length == 0) {
+                    html += "<li>";
+                    html += "无任何数据";
+                    html += "</li>";
+                }
                 $(".blogs").append(html);
             }
         });
-    }
-
-    function getCount(url,id) {
-        window.location.href=url;
-        $.ajax({
-            url: "/setCount"
-            , async: false
-            , type: "post"
-            , data: {id: id}
-        })
     }
 
 </script>

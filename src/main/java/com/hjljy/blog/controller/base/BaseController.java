@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Auther: HJLJY
@@ -43,6 +45,8 @@ public class BaseController<T> {
     public static final String USER_IN_SESSION="USER";
 
     public static Map<String,Object> map = new HashMap<>();
+
+    public static Set<String> set = new HashSet<>();
 
     public Page<T> getPage(int size, int limit){
         Page<T> page = new Page<>();

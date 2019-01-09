@@ -12,6 +12,7 @@ import com.hjljy.blog.common.utils.TemplatesUtil;
 import com.hjljy.blog.controller.base.BaseController;
 import com.hjljy.blog.entity.blog.Blog;
 import com.hjljy.blog.service.blog.BlogService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,8 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.xml.transform.Templates;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Auther: HJLJY
@@ -54,9 +54,15 @@ public class BlogController extends BaseController<Blog> {
         pageData.setOrderBy("create_time desc");
         Example example = new Example(Blog.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andLike("tags", "%"+blog.getTags()+"%");
-        criteria.andLike("title", "%"+blog.getTitle()+"%");
-        criteria.andEqualTo("type", blog.getType());
+        if(!StringUtils.isEmpty(blog.getTitle())){
+            criteria.andLike("title", "%"+blog.getTitle()+"%");
+        }
+        if (!StringUtils.isEmpty(blog.getTags()) ){
+            criteria.andLike("tags", "%"+blog.getTags()+"%");
+        }
+        if (!StringUtils.isEmpty(blog.getType())) {
+            criteria.andEqualTo("type", blog.getType());
+        }
         PageInfo<Blog> blogPageInfo = blogService.listForDataGrid(pageData, example);
         aj.setPageSuccessData(blogPageInfo.getList(), blogPageInfo.getTotal());
         return aj;
@@ -94,6 +100,30 @@ public class BlogController extends BaseController<Blog> {
         AjaxJson aj = new AjaxJson();
         blogService.deleteByIds(ids);
         aj.setSuccessMsg(Const.OP_SUCCEED);
+        return aj;
+    }
+
+    @GetMapping("/getBlogTags")
+    @ResponseBody
+    public AjaxJson getBlogTags(){
+        AjaxJson aj = new AjaxJson();
+        List<String> blogTags = blogService.getBlogTags();
+        for (String blogTag : blogTags) {
+            String[] split = blogTag.split(",");
+            for (String s : split) {
+                set.add(s);
+            }
+        }
+        aj.setSuccessData(set);
+        return aj;
+    }
+
+    @GetMapping("/getBlogTop")
+    @ResponseBody
+    public AjaxJson getBlogTop(){
+        AjaxJson aj = new AjaxJson();
+        List<Blog> topBlog = blogService.getTopBlog();
+        aj.setSuccessData(topBlog);
         return aj;
     }
 }
