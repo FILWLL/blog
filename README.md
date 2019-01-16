@@ -1,6 +1,10 @@
 # blog
 基于springboot mybatis thmlealf shiro 的博客系统
 
+2019 1.16 博客V1.0.4
+完成博客系统全局异常配置
+完成博客系统运行日志配置
+修复部分小BUG 
 
 2019 1.9 博客V1.0.3 
 完成index主界面和list界面所有功能
