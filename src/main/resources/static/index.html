@@ -112,7 +112,7 @@
     function getBlogByCreateTime(target) {
         var title = $("#keyboard").val();
         $.ajax({
-            url: "/blog/getBlogByPage"
+            url: "/blog/getBlogByPage1"
             , async: false
             , type: "get"
             , data: {"title": title, "tags": $(target).text()}
@@ -126,7 +126,7 @@
                     var d = results[i];
                     var x = d.tags.split(",");
                     html += "<li>";
-                    html += "<h3 class='blogtitle'><a href='#' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
+                    html += "<h3 class='blogtitle'><a href='javascript:;' onclick=\"getCount('" + d.url + "','" + d.id + "')\">" + d.title + "</a></h3>";
                     html += " <div class='bloginfo'><p>" + d.abs + "</p></div>";
                     html += " <div class='autor'>";
                     for (var j = 0;j<x.length;j++){

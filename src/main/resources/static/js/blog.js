@@ -1,14 +1,13 @@
 /**获取博客标签云*/
 function getBlogTags() {
     $.ajax({
-        url: "blog/getBlogTags"
+        url: "/blog/getBlogTags"
         , async: false
         , type: "get"
         , success: function (data) {
             var html = "";
             var results = data.data;
             for (var i = 0; i < results.length; i++) {
-                console.log(results[i])
                 html +=  "<a href='javascript:;' onclick='getBlogByCreateTime(this)'>"+results[i]+"</a>"
             }
             $("#cloud").append(html);

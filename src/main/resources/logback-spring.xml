@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!--输出日志到文件当中-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>
+                [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily 配置日志所生成的目录以及生成文件名的规则 -->
+            <fileNamePattern>logs/hjljy-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>  <!--只输出error级别的信息到文件当中-->
+        </filter>
+        <prudent>true</prudent>
+    </appender>
+    <!--输出日志到控制台当中-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+    <!--只输入错误信息到控制台和日志文件当中-->
+    <root level="error">
+        <appender-ref ref="file" />
+        <appender-ref ref="console" />
+    </root>
+    <!--将本项目的代码运行日志输出到控制台和日志文件当中 -->
+    <logger name="com.hjljy.blog" additivity="false" >
+        <appender-ref ref="console"/>
+        <appender-ref ref="file" />
+    </logger>
+</configuration>

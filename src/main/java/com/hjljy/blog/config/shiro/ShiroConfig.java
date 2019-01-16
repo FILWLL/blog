@@ -115,7 +115,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //跳转到登录界面的url
-        shiroFilterFactoryBean.setLoginUrl("/");
+        shiroFilterFactoryBean.setLoginUrl("/login");
         //登录成功后跳转的URL
         shiroFilterFactoryBean.setSuccessUrl("/system/index");
         //没有权限的URL
@@ -126,12 +126,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/html/**", "anon");
         filterChainDefinitionMap.put("/index.html", "anon");
-        filterChainDefinitionMap.put("/baidu_verify_chO9cDCggD.html", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/plugin/**", "anon");
-        filterChainDefinitionMap.put("/upload/**", "anon");
-        filterChainDefinitionMap.put("/files/**", "anon");
         filterChainDefinitionMap.put("/bloghtml/**", "anon");
         filterChainDefinitionMap.put("/blog/**", "anon");
         /* 登陆请求放行*/

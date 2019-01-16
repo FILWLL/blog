@@ -40,7 +40,7 @@ public class BlogController extends BaseController<Blog> {
 
     private final BlogService blogService;
 
-
+    @RequiresPermissions("sys:blog:index")
     @RequestMapping("/index")
     public String index(){
         return "blog/index";
