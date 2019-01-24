@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.servlet.MultipartConfigElement;
 import java.security.PrivateKey;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @ServletComponentScan
+@EnableScheduling
 public class BlogApplication {
 
 	public static void main(String[] args) {

@@ -367,4 +367,8 @@ public class Account implements Serializable {
         this.updater = updater == null ? null : updater.trim();
     }
 
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", roleId=" + roleId + ", orgId=" + orgId + ", description='" + description + '\'' + ", password='" + password + '\'' + ", username='" + username + '\'' + ", email='" + email + '\'' + ", phone='" + phone + '\'' + ", address='" + address + '\'' + ", status=" + status + ", sex='" + sex + '\'' + ", createTime=" + createTime + ", creator='" + creator + '\'' + ", modifiedTime=" + modifiedTime + ", updater='" + updater + '\'' + '}';
+    }
 }

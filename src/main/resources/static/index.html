@@ -112,7 +112,7 @@
     function getBlogByCreateTime(target) {
         var title = $("#keyboard").val();
         $.ajax({
-            url: "/blog/getBlogByPage1"
+            url: "/blog/getBlogByPage"
             , async: false
             , type: "get"
             , data: {"title": title, "tags": $(target).text()}

@@ -28,6 +28,11 @@
     </properties>
 
     <dependencies>
+        <!--引入quartz定时框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
         <!--推荐界面模板引擎 thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
